@@ -3,12 +3,12 @@ USE TSHDB;
 
 -- create table
 CREATE TABLE Designation (
-    designation_id INT IDENTITY(300,1) PRIMARY KEY,
+    designation_id INT IDENTITY(200,1) PRIMARY KEY,
     designation_name VARCHAR(40) NOT NULL,
 );
 
 CREATE TABLE Skill (
-    skill_id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+    skill_id INT IDENTITY(400,1) PRIMARY KEY NOT NULL,
     skill_name VARCHAR(100) NOT NULL
 );
 
@@ -23,7 +23,7 @@ CREATE TABLE Staff (
 );
 
 CREATE TABLE Training (
-    training_id INT IDENTITY(1,1) PRIMARY KEY NOT NULL,
+    training_id INT IDENTITY(600,1) PRIMARY KEY NOT NULL,
     grade CHAR(1),
     startDate DATE,
 		endDate DATE,
