@@ -2,20 +2,69 @@ import { pool, sql } from './db.js';
 
 const tableName = 'Staff';
 
-export async function sync() {
+// Check if a column exists in the table
+async function columnExists(columnName) {
   try {
-    await pool.request().query(`
-      CREATE TABLE IF NOT EXISTS ${tableName} (
-        id INTEGER IDENTITY(100,1) PRIMARY KEY,
-        name VARCHAR(255) UNIQUE
-      )
+    const result = await pool.request().query(`
+      SELECT COLUMN_NAME
+      FROM INFORMATION_SCHEMA.COLUMNS
+      WHERE TABLE_NAME = '${tableName}' AND COLUMN_NAME = '${columnName}'
     `);
+    return result.recordset.length > 0;
   } catch (error) {
-    console.error('Database connection failed: ', error);
+    console.error('Error checking column existence: ', error);
     throw error;
   }
 }
 
+// Add a new column to the table
+async function addColumn(columnName, columnType) {
+  try {
+    await pool.request().query(`
+      ALTER TABLE ${tableName}
+      ADD ${columnName} ${columnType}
+    `);
+    console.log(`Column ${columnName} added`);
+  } catch (error) {
+    console.error(`Error adding column ${columnName}: `, error);
+    throw error;
+  }
+}
+
+export async function insertStaff(staff) {
+  const columns = {
+    first_name: 'VARCHAR(40)',
+    last_name: 'VARCHAR(40)',
+    email: 'VARCHAR(100)',
+    designation_id: 'INT',
+    training_id: 'INT'
+  };
+
+  try {
+    for (const column in staff) {
+      if (!await columnExists(column)) {
+        await addColumn(column, columns[column] || 'VARCHAR(255)');
+      }
+    }
+
+    const request = pool.request();
+    for (const key in staff) {
+      request.input(key, sql.VarChar(255), staff[key]);
+    }
+
+    const result = await request.query(`
+      INSERT INTO ${tableName} (${Object.keys(staff).join(', ')})
+      VALUES (${Object.keys(staff).map((_, i) => `@${Object.keys(staff)[i]}`).join(', ')});
+      SELECT SCOPE_IDENTITY() AS insertedId;
+    `);
+
+    const insertedId = result.recordset[0].insertedId;
+    return getStaff(insertedId);
+  } catch (error) {
+    console.error('Error inserting staff: ', error);
+    throw error;
+  }
+}
 
 export async function getAllStaff() {
   try {
@@ -24,14 +73,10 @@ export async function getAllStaff() {
     return result.recordset;
   } catch (err) {
     console.error('Error querying all staff: ', err);
-    throw err; // Rethrow the error to propagate it
+    throw err;
   }
 }
-/**
- * Return a list containing one staff member if exists by its staff id
- * @param {int} id - The staff id
- * @returns {Promise<Object[]>} - A list of staff members (either empty or containing one staff member)
- */
+
 export async function getStaff(id) {
   try {
     const request = pool.request();
@@ -43,28 +88,3 @@ export async function getStaff(id) {
     throw error;
   }
 }
-
-export async function insertStaff(staff) {
-    const { first_name, last_name, email, designation_id, training_id } = staff;
-  
-    try {
-      const request = pool.request();
-      request.input('first_name', sql.VarChar(255), first_name);
-      request.input('last_name', sql.VarChar(255), last_name);
-      request.input('email', sql.VarChar(255), email);
-      request.input('designation_id', sql.Int, designation_id);
-      request.input('training_id', sql.Int, training_id);
-  
-      const result = await request.query(`
-        INSERT INTO ${tableName} (first_name, last_name, email, designation_id, training_id)
-        VALUES (@first_name, @last_name, @email, @designation_id, @training_id);
-        SELECT SCOPE_IDENTITY() AS insertedId;
-      `);
-  
-      const insertedId = result.recordset[0].insertedId;
-      return getStaff(insertedId);
-    } catch (error) {
-      console.error('Error inserting staff: ', error);
-      throw error;
-    }
-  }

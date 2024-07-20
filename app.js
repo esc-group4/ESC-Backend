@@ -3,6 +3,7 @@ import { getAllStaff, getStaff, insertStaff} from './models/staff.js';
 import { connectToDatabase, cleanup } from './models/db.js'; // Assuming db connection functions are in db.js
 
 const app = express();
+app.use(express.json()); // Add this line to handle JSON request bodies
 
 // Middleware to connect to the database on startup
 app.use(async (req, res, next) => {

@@ -7,7 +7,7 @@ const router = express.Router();
 router.get('/all/', async function (req, res, next) {
     try {
         const staffs = await getAllStaff();
-        res.set('Access-Control-Allow-Origin', 'http://localhost:3001');
+        res.set('Access-Control-Allow-Origin', 'http://localhost:8080');
         res.json(staffs);
     } catch (error) {
         next(error);
