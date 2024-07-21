@@ -5,12 +5,20 @@ import cors from "cors"; // Add this to the list of imports
 import dotenv from "dotenv"; // Add to import list
 import { verifyToken } from './middleware/verifyToken.js';
 
+import { getAllCourses } from './models/course.js'; // Adjust the path as needed
+
+
 
 const app = express();
 app.use(cors());
 dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
+// Get all courses
+app.get('/courses', (req, res) => {
+  res.json(getAllCourses());
+});
 
 
 // Middleware to connect to the database on startup
@@ -107,7 +115,8 @@ process.on('SIGINT', async () => {
   process.exit(0);
 });
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
