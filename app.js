@@ -34,7 +34,7 @@ const dummyUserData = {
   firebase_uid: "abc123",
   name: "John Doe",
   email: "john@example.com",
-  role: "admin"
+  role: "employee"
 };
 
 
