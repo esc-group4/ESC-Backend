@@ -8,6 +8,7 @@ export async function sync() {
       CREATE TABLE IF NOT EXISTS ${tableName} (
         id INTEGER IDENTITY(100,1) PRIMARY KEY,
         name VARCHAR(255) UNIQUE
+        email VARCHAR(255) UNIQUE
       )
     `);
   } catch (error) {
