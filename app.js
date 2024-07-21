@@ -14,7 +14,7 @@ app.use(express.urlencoded({ extended: false }));
 
 
 // Middleware to connect to the database on startup
-/* app.use(async (req, res, next) => {
+app.use(async (req, res, next) => {
   try {
     await connectToDatabase();
     next();
@@ -22,76 +22,36 @@ app.use(express.urlencoded({ extended: false }));
     console.error('Database connection error: ', err);
     res.status(500).send('Database connection error');
   }
-}); */
+});
 
 app.get("/", (req, res) => {
   res.send("working fine");
 });
 
 
-const dummyUserData = {
+const dummyUserData1 = {
   id: 1,
-  firebase_uid: "abc123",
-  name: "John Doe",
-  email: "john@example.com",
-  role: "employee"
+  firebase_uid: "asdasdads",
+  name: "Jim",
+  email: "jim@example.com",
+  role: "CNC Machine Operator"
 };
 
+const dummyUserData2 = {
+  id: 2,
+  firebase_uid: "abc123",
+  name: "Michael",
+  email: "michael@Mayer.com",
+  role: "HOD Machining"
+};
 
-app.post('/api/verifyToken', verifyToken, async (req, res) => {
-  const uid = req.user.uid;
-
-  try {
-
-    /* const [rows] = await db.execute('SELECT * FROM users WHERE firebase_uid = ?', [uid]);
-    
-    if (rows.length === 0) {
-      return res.status(404).send('User not found');
-    }
-
-    const user = rows[0];
-    res.json(user); */
-    console.log(`Received UID: ${uid}`);
-    res.json(dummyUserData);
-  } catch (error) {
-    console.error('Error querying the database:', error);
-    res.status(500).json({ message: "Internal Error" });
-  }
-});
-
-// Route to get all staff
-app.get('/staff', async (req, res) => {
-  try {
-    const staffs = await getAllStaff();
-    res.json(staffs);
-  } catch (err) {
-    console.error('Error retrieving staff: ', err);
-    res.status(500).send('Error retrieving staff');
-  }
-});
-
-app.get('/staff/:id', async (req, res) => {
-    try {
-      const id = req.params.id;
-      const staff = await getStaff(id);
-      res.send(staff);
-    } catch (err) {
-      console.error('Error retrieving staff id: ', err);
-      res.status(500).send('Error retrieving staff id');
-    }
-});
-
-// Route to insert a new staff member
-app.post('/staff', async (req, res) => {
-  try {
-    const newStaff = req.body;
-    const insertedStaff = await insertStaff(newStaff);
-    res.status(201).json(insertedStaff);
-  } catch (err) {
-    console.error('Error inserting staff: ', err);
-    res.status(500).send('Error inserting staff');
-  }
-});
+const dummyUserData3 = {
+  id: 1,
+  firebase_uid: "abc123",
+  name: "Toby",
+  email: "toby@example.com",
+  role: "HR Admin"
+};
 
 
 // Error handling middleware
