@@ -2,7 +2,7 @@
 const courses = [
     {
         id: 1,
-        title: 'Course 1',
+        title: 'COURSE TEST 1',
         deadline: '2024-07-27',
         info: 'Details about Course 1',
         location: 'Location A',
@@ -13,7 +13,7 @@ const courses = [
       },
       {
         id: 2,
-        title: 'Course 2',
+        title: 'Course TEST 2',
         deadline: '2024-08-05',
         info: 'Details about Course 2',
         location: 'Location B',
@@ -24,7 +24,7 @@ const courses = [
       },
       {
         id: 3,
-        title: 'Course 3',
+        title: 'Course TEST 3',
         deadline: '2024-08-25',
         info: 'Details about Course 3',
         location: 'Location C',

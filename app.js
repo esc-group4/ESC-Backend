@@ -1,30 +1,27 @@
 import express from 'express';
-import { getAllStaff, getStaff, insertStaff} from './models/staff.js';
-import { connectToDatabase, cleanup } from './models/db.js'; // Assuming db connection functions are in db.js
-import cors from "cors"; // Add this to the list of imports
-import dotenv from "dotenv"; // Add to import list
-import { verifyToken } from './middleware/verifyToken.js';
+import cors from "cors"; 
+import dotenv from "dotenv"; 
+import { courseRoute } from './routes/course.js'
+import { tokenRoute } from './routes/token.js'
+
+import { staffsync } from './models/staff.js'
+import { cleanup } from './models/db.js'
 
 
 const app = express();
+staffsync()
 app.use(cors());
 dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 
+app.use('/course', courseRoute);
+//app.use('/staff', staffRoute);
+app.use('/token', tokenRoute);
 
 
-// Middleware to connect to the database on startup
-app.use(async (req, res, next) => {
-  try {
-    await connectToDatabase();
-    next();
-  } catch (err) {
-    console.error('Database connection error: ', err);
-    res.status(500).send('Database connection error');
-  }
-});
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -34,6 +31,12 @@ app.use((err, req, res, next) => {
 
 // Cleanup on shutdown
 process.on('SIGINT', async () => {
+  console.log('Closing database connection pool');
+  await cleanup();
+  process.exit(0);
+});
+
+process.on('SIGTERM', async () => {
   console.log('Closing database connection pool');
   await cleanup();
   process.exit(0);

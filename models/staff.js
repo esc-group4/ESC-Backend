@@ -1,16 +1,34 @@
-import { pool, sql } from './db.js';
+import { pool } from './db.js';
 
 const tableName = 'Staff';
 
-export async function sync() {
+class Staff {
+  constructor(id, name, email, departmentId, designationId, firebaseUid) {
+    this.id = id;
+    this.name = name;
+    this.email = email;
+    this.departmentId = departmentId;
+    this.designationId = designationId;
+    this.firebaseUid = firebaseUid;
+  }}
+
+
+
+ async function staffsync() {
   try {
-    await pool.request().query(`
+    await pool.query(`
       CREATE TABLE IF NOT EXISTS ${tableName} (
-        id INTEGER IDENTITY(100,1) PRIMARY KEY,
-        name VARCHAR(255) UNIQUE
-        email VARCHAR(255) UNIQUE
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        name VARCHAR(255) NOT NULL,
+        email VARCHAR(255) NOT NULL,
+        departmentId INT,
+        designationId INT,
+        firebase_uid VARCHAR(255) UNIQUE,
+        FOREIGN KEY (departmentId) REFERENCES Department(departmentId),
+        FOREIGN KEY (designationId) REFERENCES Designation(designationId)
       )
     `);
+    console.log(`Table ${tableName} created or already exists`);
   } catch (error) {
     console.error('Database connection failed: ', error);
     throw error;
@@ -18,54 +36,28 @@ export async function sync() {
 }
 
 
-export async function getAllStaff() {
-  try {
-    const poolRequest = pool.request();
-    const result = await poolRequest.query(`SELECT * FROM ${tableName}`);
-    return result.recordset;
-  } catch (err) {
-    console.error('Error querying all staff: ', err);
-    throw err; // Rethrow the error to propagate it
-  }
-}
+
 /**
- * Return a list containing one staff member if exists by its staff id
- * @param {int} id - The staff id
- * @returns {Promise<Object[]>} - A list of staff members (either empty or containing one staff member)
+ * Get staff by firebase_uid
+ * @param {string} firebaseUid - The Firebase UID of the staff
+ * @returns {Staff} - The staff object
  */
-export async function getStaff(id) {
+ async function getByFirebaseUid(firebaseUid) {
   try {
-    const request = pool.request();
-    request.input('id', sql.Int, id);
-    const result = await request.query(`SELECT * FROM ${tableName} WHERE id = @id`);
-    return result.recordset;
+    const [rows, fieldDefs] = await pool.query(`
+      SELECT staffId, name, email, departmentId, designationId, firebase_uid 
+      FROM ${tableName} 
+      WHERE firebase_uid = ?
+    `, [firebaseUid]);
+    if (rows.length === 0) return null;
+
+    const row = rows[0]; // its only 1 row anyways
+    return new Staff(row.id, row.name, row.email, row.departmentId, row.designationId, row.firebase_uid);
   } catch (error) {
-    console.error('Error querying staff by id: ', error);
+    console.error(`Error fetching staff by firebase_uid:`, error);
     throw error;
   }
 }
 
-export async function insertStaff(staff) {
-    const { first_name, last_name, email, designation_id, training_id } = staff;
-  
-    try {
-      const request = pool.request();
-      request.input('first_name', sql.VarChar(255), first_name);
-      request.input('last_name', sql.VarChar(255), last_name);
-      request.input('email', sql.VarChar(255), email);
-      request.input('designation_id', sql.Int, designation_id);
-      request.input('training_id', sql.Int, training_id);
-  
-      const result = await request.query(`
-        INSERT INTO ${tableName} (first_name, last_name, email, designation_id, training_id)
-        VALUES (@first_name, @last_name, @email, @designation_id, @training_id);
-        SELECT SCOPE_IDENTITY() AS insertedId;
-      `);
-  
-      const insertedId = result.recordset[0].insertedId;
-      return getStaff(insertedId);
-    } catch (error) {
-      console.error('Error inserting staff: ', error);
-      throw error;
-    }
-  }
+
+export { Staff, getByFirebaseUid, staffsync } 
