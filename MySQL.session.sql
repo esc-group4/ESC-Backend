@@ -1,52 +1,95 @@
 CREATE DATABASE TSHDB;
 USE TSHDB;
 
--- create table
+-- Create Department table
+CREATE TABLE Department (
+	department_name VARCHAR(100) NOT NULL,
+	department_location VARCHAR(100) NOT NULL,
+	PRIMARY KEY(department_name),
+	UNIQUE(department_name)
+);
+
+-- Create Designation table references from the Department
 CREATE TABLE Designation (
-    designation_id INT IDENTITY(200,1) PRIMARY KEY,
-    designation_name VARCHAR(40) NOT NULL,
+	position VARCHAR(100) NOT NULL,
+	description VARCHAR(100) NOT NULL,
+	super VARCHAR(100) NOT NULL,
+	department_name VARCHAR(100) NOT NULL,
+	PRIMARY KEY (position),
+    FOREIGN KEY (department_name) REFERENCES Department(department_name) ON DELETE CASCADE,
+	UNIQUE(position)
+);
+
+-- Create Staff table references from the Designation
+CREATE TABLE Staff (
+    staff_id INT NOT NULL AUTO_INCREMENT,
+    staff_first_name VARCHAR(100) NOT NULL,
+	staff_last_name VARCHAR(100) NOT NULL,
+	staff_email VARCHAR(100) NOT NULL,
+    position VARCHAR(100) NOT NULL,
+    training_id INT,
+	PRIMARY KEY (staff_id),
+    FOREIGN KEY (position) REFERENCES Designation(position) ON DELETE CASCADE,
+	FOREIGN KEY (training_id) REFERENCES Training(training_id),
+	UNIQUE (staff_id)
 );
 
 CREATE TABLE Skill (
-    skill_id INT IDENTITY(400,1) PRIMARY KEY NOT NULL,
-    skill_name VARCHAR(100) NOT NULL
+    skill_name VARCHAR(100) NOT NULL,
+	PRIMARY KEY (skill_name),
+	UNIQUE(skill_name)
 );
 
-CREATE TABLE Staff (
-    id INT IDENTITY(100,1) PRIMARY KEY NOT NULL,
-    first_name VARCHAR(40) NOT NULL,
-    last_name VARCHAR(40) NOT NULL,
-    email VARCHAR(100) NOT NULL,
-    designation_id INT NOT NULL,
-    training_id INT,
-    FOREIGN KEY (designation_id) REFERENCES Designation(designation_id) ON DELETE CASCADE
+--  Create Course table references from the Skill
+CREATE TABLE Course (
+	course_id INT IDENTITY (400, 1) NOT NULL,
+	course_name VARCHAR(100) NOT NULL,
+	course_providerName VARCHAR(100) NOT NULL,
+	skill_name VARCHAR(100) NOT NULL,
+	PRIMARY KEY (course_id),
+	FOREIGN KEY (skill_name) REFERENCES Skill(skill_name),
+	UNIQUE(course_id),
 );
 
+-- CoursePlan is a child table of Training table
 CREATE TABLE Training (
-    training_id INT IDENTITY(600,1) PRIMARY KEY NOT NULL,
+    training_id INT IDENTITY(600,1) NOT NULL, --not unique so multiple staffs attend a training
     grade CHAR(1),
-    startDate DATE,
-		endDate DATE,
-    completedDate DATE,
-    staff_id INT,
-    course_id INT,
+    startDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+	endDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    completedDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+    staff_id INT, -- able to have no staff in training
+    course_id INT, -- able to have no course in training because of no staff
+	PRIMARY KEY (training_id),
     FOREIGN KEY (staff_id) REFERENCES Staff(id) ON DELETE CASCADE, 
-    FOREIGN KEY (course_id) REFERENCES Course(course_id) ON DELETE CASCADE  
+    FOREIGN KEY (course_id) REFERENCES Course(course_id) ON DELETE CASCADE
 );
 
+CREATE TABLE TrainingRequest (
+	request_id INT NOT NULL AUTO_INCREMENT,
+	training_type VARCHAR(100) NOT NULL,
+	training_reason VARCHAR(100),
+	generatedDate DATETIME DEFAULT CURRENT_TIMESTAMP,
+	status BOOL DEFAULT 0 NOT NULL,
+	PRIMARY KEY (request_id),
+	department_name VARCHAR(100) NOT NULL,
+	course_id INT NOT NULL,
+	FOREIGN KEY (department_name) REFERENCES Department(department_name),
+	FOREIGN KEY (course_id) REFERENCES Course(course_id),
+	UNIQUE (request_id)
+);
 
 -- insert values
-INSERT INTO dbo.Designation (designation_name, department_id)
-VALUES ('CNC Machine Operator', 300),
-			('Tooling Operator', 300),
-			('Chip Cleaner', 300),
-			('Tool Crib Leader', 300),
-			('Maintenance', 300),
-			('Maintenance/Construction', 300),
-			('Machinist', 300),
-			('Conventional Grinding', 300),
-			('Saw cut', 300),
-			('Slim3N Leader/Machinist', 300);
+INSERT INTO dbo.Designation (department_name, department_location)
+VALUES ('CNC Machine Operator', 'Busan'),
+			('Tooling Operator', 'Tokyo'),
+			('Chip Cleaner', 'Taipei'),
+			('Tool Crib Leader', 'Kuala Lumpur'),
+			('Maintenance/Construction', 'Shenzhen'),
+			('Machinist', 'Guangzhou'),
+			('Conventional Grinding', 'Pohang'),
+			('Saw cut', 'Yokohama'),
+			('Slim3N Leader/Machinist', 'Kaohsiung');
 
 
 INSERT INTO dbo.Course (course_name)
@@ -55,7 +98,7 @@ VALUES ('Material Planner'),
 			('CNC Machinst'),
 			('Packing');
 
-INSERT INTO dbo.Staff(first_name, last_name, email, designation_id, training_id)
+INSERT INTO dbo.Staff(staff_first_name, staff_last_name, staff_email, position, training_id)
 VALUES ('Javier', 'Tan', 'javiertan@TSH.com', 202, 609),
 			 ('Vivian', 'Quek', 'QuekVivian@TSH.com', 208, 604),
 			 ('Jun Jie', 'Wang', 'Junjie20@TSH.com', 209, 603),
