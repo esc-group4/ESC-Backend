@@ -1,30 +1,36 @@
+// app.js
 import express from 'express';
-import { getAllStaff, getStaff, insertStaff} from './models/staff.js';
-import { connectToDatabase, cleanup } from './models/db.js'; // Assuming db connection functions are in db.js
-import cors from "cors"; // Add this to the list of imports
-import dotenv from "dotenv"; // Add to import list
-import { verifyToken } from './middleware/verifyToken.js';
-
+import bodyParser from 'body-parser';
+import { pool, connectToDatabase, cleanup } from './models/db.js';
+import staffRoutes from './routes/staff.js';
+import trainingRoutes from './routes/training.js';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocs from './docs/swaggerConfig.js';
 
 const app = express();
-app.use(cors());
-dotenv.config();
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
 
-
-
+// Middleware to parse JSON request bodies
+app.use(bodyParser.json());
 
 // Middleware to connect to the database on startup
 app.use(async (req, res, next) => {
-  try {
-    await connectToDatabase();
-    next();
-  } catch (err) {
-    console.error('Database connection error: ', err);
-    res.status(500).send('Database connection error');
+  if (!pool.connected) {
+    try {
+      await connectToDatabase();
+    } catch (err) {
+      console.error('Database connection error: ', err);
+      return res.status(500).send('Database connection error');
+    }
   }
+  next();
 });
+
+// Use the routes
+app.use('/staff', staffRoutes);
+app.use('/training', trainingRoutes);
+
+// Swagger setup
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -39,7 +45,7 @@ process.on('SIGINT', async () => {
   process.exit(0);
 });
 
-const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+const port = 8080;
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`);
 });
