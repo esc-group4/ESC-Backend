@@ -1,3 +1,4 @@
+import { getAllStaff, getStaff, insertStaff} from './models/staff.js';
 
 // Route to get all staff
 app.get('/staff', async (req, res) => {

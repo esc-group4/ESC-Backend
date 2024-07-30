@@ -1,28 +1,15 @@
-const dummyUserData1 = {
-    id: 1,
-    firebase_uid: "asdasdads",
-    name: "Jim",
-    email: "jim@example.com",
-    role: "CNC Machine Operator"
-  };
-  
-  const dummyUserData2 = {
-    id: 2,
-    firebase_uid: "abc123",
-    name: "Michael",
-    email: "michael@Mayer.com",
-    role: "HOD Machining"
-  };
-  
-  const dummyUserData3 = {
-    id: 1,
-    firebase_uid: "abc123",
-    name: "Toby",
-    email: "toby@example.com",
-    role: "HR Admin"
-  };
+import { verifyToken } from './middleware/verifyToken.js';
+import express from 'express';
 
+const dummyUserData = {
+  id: 1,
+  firebase_uid: "abc123",
+  name: "Javier Tan",
+  email: "javiertan@tsh.com",
+  role: "Engineering Manager",
+  department: "employee",
 
+};
 
 app.post('/verifyToken', verifyToken, async (req, res) => {
     const uid = req.user.uid;
