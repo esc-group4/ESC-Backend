@@ -1,10 +1,14 @@
 import express from 'express';
-import { getAllStaff, getStaff, insertStaff} from './models/staff.js';
-import { connectToDatabase, cleanup } from './models/db.js'; // Assuming db connection functions are in db.js
+// import { getAllStaff, getStaff, insertStaff} from './models/staff.js';
+
 import cors from "cors"; // Add this to the list of imports
 import dotenv from "dotenv"; // Add to import list
-import { verifyToken } from './middleware/verifyToken.js';
+// import { verifyToken } from './middleware/verifyToken.js';
 
+import { cleanup } from './models/db.js';
+import department from './models/department.js';
+
+department.sync();
 
 const app = express();
 app.use(cors());
@@ -13,12 +17,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 
-
-
 // Middleware to connect to the database on startup
 app.use(async (req, res, next) => {
   try {
-    await connectToDatabase();
     next();
   } catch (err) {
     console.error('Database connection error: ', err);
@@ -32,12 +33,8 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something broke!');
 });
 
-// Cleanup on shutdown
-process.on('SIGINT', async () => {
-  console.log('Closing database connection pool');
-  await cleanup();
-  process.exit(0);
-});
+process.on('SIGINT', cleanup);
+process.on('SIGTERM', cleanup);
 
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

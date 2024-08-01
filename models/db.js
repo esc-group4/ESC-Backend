@@ -1,41 +1,28 @@
-import sql from 'mssql/msnodesqlv8.js';
+import mysql from 'mysql2';
 
-//database configuration 
+const database = "tsh";
+const pool = mysql
+  .createPool({
+    host: "localhost",
+    user: "root",
+    database: "mysql",
+    password: "password",
+    connectionLimit: 10,
+  })
+  .promise();
 
-var config = {
-      server : "SHINBEAN\\SQL2024", 
-      database: "TSHDB",
-      driver:"msnodesqlv8",
-      connectionString: "DSN=mssql",
-      options :{
-       trustedConnection:true,
-     },
- };
+async function init() {
+  try {
+    await pool.query(`CREATE DATABASE IF NOT EXISTS ${database}`);
+    await pool.query(`Use ${database}`);
+  } catch (error) {
+    console.error('Database Failed to Create and Use: ', error);
+    throw error;
+  }
+}
 
- // connection pool
- const pool = new sql.ConnectionPool(config);
+await init()
 
- export async function connectToDatabase() {
-   try {
-     await pool.connect();
-     console.log('Connected to SQL Server');
-   } catch (err) {
-     console.error('Database connection failed: ', err);
-     throw err;
-   }
- }
+const cleanup = async () => await pool.end();
 
- // disconnect from the database
- export async function cleanup() {
-   try {
-     await pool.close();
-     console.log('Connection pool closed');
-   } catch (err) {
-     console.error('Error closing connection pool: ', err);
-     throw err;
-   }
- }
- 
-
- export { pool, sql };
-
+export { pool, cleanup };

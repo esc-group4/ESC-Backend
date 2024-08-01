@@ -2,7 +2,7 @@ import { pool, sql } from './db.js';
 
 const tableName = 'Staff';
 
-export async function sync() {
+async function sync() {
   try {
     await pool.request().query(`
       CREATE TABLE IF NOT EXISTS ${tableName} (
@@ -33,7 +33,7 @@ export async function getAllStaff() {
  * @param {int} id - The staff id
  * @returns {Promise<Object[]>} - A list of staff members (either empty or containing one staff member)
  */
-export async function getStaff(id) {
+async function getStaff(id) {
   try {
     const request = pool.request();
     request.input('id', sql.Int, id);
@@ -45,27 +45,29 @@ export async function getStaff(id) {
   }
 }
 
-export async function insertStaff(staff) {
-    const { first_name, last_name, email, designation_id, training_id } = staff;
-  
-    try {
-      const request = pool.request();
-      request.input('first_name', sql.VarChar(255), first_name);
-      request.input('last_name', sql.VarChar(255), last_name);
-      request.input('email', sql.VarChar(255), email);
-      request.input('designation_id', sql.Int, designation_id);
-      request.input('training_id', sql.Int, training_id);
-  
-      const result = await request.query(`
+async function insertStaff(staff) {
+  const { first_name, last_name, email, designation_id, training_id } = staff;
+
+  try {
+    const request = pool.request();
+    request.input('first_name', sql.VarChar(255), first_name);
+    request.input('last_name', sql.VarChar(255), last_name);
+    request.input('email', sql.VarChar(255), email);
+    request.input('designation_id', sql.Int, designation_id);
+    request.input('training_id', sql.Int, training_id);
+
+    const result = await request.query(`
         INSERT INTO ${tableName} (first_name, last_name, email, designation_id, training_id)
         VALUES (@first_name, @last_name, @email, @designation_id, @training_id);
         SELECT SCOPE_IDENTITY() AS insertedId;
       `);
-  
-      const insertedId = result.recordset[0].insertedId;
-      return getStaff(insertedId);
-    } catch (error) {
-      console.error('Error inserting staff: ', error);
-      throw error;
-    }
+
+    const insertedId = result.recordset[0].insertedId;
+    return getStaff(insertedId);
+  } catch (error) {
+    console.error('Error inserting staff: ', error);
+    throw error;
   }
+}
+
+export { sync, getStaff, insertStaff };
