@@ -1,112 +1,25 @@
 import express from 'express';
-
-import cors from "cors";
-import dotenv from "dotenv";
-import { courseRoute } from './routes/course.js'
-import { tokenRoute } from './routes/token.js'
-
-import { staffsync } from './models/staff.js'
-import { cleanup } from './models/db.js'
-
-// import { getAllStaff, getStaff, insertStaff} from './models/staff.js';
-// import { verifyToken } from './middleware/verifyToken.js';
-
-// import { getAllCourses } from './models/course.js'; // Adjust the path as needed
-// import { getCoursesByEmail } from './models/course.js'; // Adjust the path as needed
-// import { updateCourseStatus } from './models/course.js'; // Adjust the path as needed
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { cleanup } from './models/db.js';
+import { sync } from './models/dbSync.js';
+import { router as departmentRouter } from './routes/department.js';
+import { router as staffRouter } from './routes/staff.js';
+import { router as courseRouter } from './routes/course.js';
+import { router as tokenRouter } from './routes/token.js';
 
 const app = express();
-staffsync()
 app.use(cors());
 dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-import { sync } from './models/dbSync.js';
 await sync();
-
-import { router as departmentRouter } from './routes/department.js';
-import { router as staffRouter } from './routes/staff.js';
 
 app.use('/department', departmentRouter);
 app.use('/staff', staffRouter);
-
-// Get all courses
-// app.get('/courses', (req, res) => {
-//   res.json(getAllCourses());
-// });
-
-// app.get('/courses/:email', (req, res) => {
-//   const email = req.params.email;
-//   const userCourses = getCoursesByEmail(email);
-
-//   if (userCourses.length === 0) {
-//     return res.status(404).json({ message: 'No courses found for this user' });
-//   }
-
-//   res.json(userCourses);
-// });
-
-
-app.use('/course', courseRoute);
-//app.use('/staff', staffRoute);
-app.use('/token', tokenRoute);
-
-// app.put('/courses/:id/status', (req, res) => {
-//   const { id } = req.params;
-//   const { status } = req.body;
-//   const updatedCourse = updateCourseStatus(parseInt(id), status);
-//   if (updatedCourse) {
-//     res.json(updatedCourse);
-//   } else {
-//     res.status(404).send('Course not found');
-//   }
-// });
-
-
-// Middleware to connect to the database on startup
-/* app.use(async (req, res, next) => {
-  
-  try {
-    next();
-  } catch (err) {
-    console.error('Database connection error: ', err);
-    res.status(500).send('Database connection error');
-  }
-}); */
-app.get("/", (req, res) => {
-  res.send("working fine");
-});
-
-const dummyUserData = {
-  id: 1,
-  firebase_uid: "abc123",
-  name: "Javier Tan",
-  email: "javiertan@tsh.com",
-  role: "Engineering Manager",
-  department: "employee",
-
-};
-
-// app.post('/verifyToken', verifyToken, async (req, res) => {
-//   const uid = req.user.uid;
-//   try {
-//     /* const [rows] = await db.execute('SELECT * FROM users WHERE firebase_uid = ?', [uid]);
-
-//     if (rows.length === 0) {
-//       return res.status(404).send('User not found');
-//     }
-//     const user = rows[0];
-//     res.json(user); */
-//     console.log(`Received UID: ${uid}`);
-//     res.json(dummyUserData);
-//   } catch (error) {
-//     console.error('Error querying the database:', error);
-//     res.status(500).json({ message: "Internal Error" });
-//   }
-// });
-
-
+app.use('/course', courseRouter);
+app.use('/token', tokenRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -119,6 +32,4 @@ process.on('SIGTERM', cleanup);
 
 const PORT = process.env.PORT || 8080;
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+app.listen(PORT, _ => console.log(`Server is running on port ${PORT}`));
