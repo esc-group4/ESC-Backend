@@ -4,7 +4,10 @@ export const sync = async () => {
         'department',
         'designation',
         'staff',
-        'skill'
+        'skill',
+        'course',
+        'trainingRequest',
+        'training'
     ];
 
     for (const modelName of modelsOrder) {
