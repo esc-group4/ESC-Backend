@@ -1,25 +1,27 @@
 import { pool } from './db.js';
 
 const tableName = 'Department';
+const tableColumns = `
+department_name VARCHAR(100) NOT NULL,
+department_location VARCHAR(100) NOT NULL,
+PRIMARY KEY (department_name),
+UNIQUE (department_name)
+`;
 
 class Department {
-  constructor({ department_name, department_location = null }) {
-    this.department_name = department_name;
-    this.department_location = department_location;
+  constructor(obj) {
+    const columns = [
+      "department_name",
+      "department_location"
+    ].forEach(name => this[name] = obj[name]);
   }
 }
 
 async function sync() {
   try {
-    pool.query(`
-      CREATE TABLE IF NOT EXISTS ${tableName} (
-        department_name VARCHAR(100) NOT NULL,
-        department_location VARCHAR(100) NOT NULL,
-        PRIMARY KEY (department_name),
-          UNIQUE (department_name)
-      )`);
+    await pool.query(`CREATE TABLE IF NOT EXISTS ${tableName} (${tableColumns});`);
   } catch (error) {
-    console.error('Database connection failed: ', error);
+    console.error(`${tableName} failed to sync: `, error);
     throw error;
   }
 }

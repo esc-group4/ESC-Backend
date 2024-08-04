@@ -6,9 +6,6 @@ import dotenv from "dotenv"; // Add to import list
 // import { verifyToken } from './middleware/verifyToken.js';
 
 import { cleanup } from './models/db.js';
-import { sync } from './models/department.js';
-
-sync();
 
 // import { getAllCourses } from './models/course.js'; // Adjust the path as needed
 // import { getCoursesByEmail } from './models/course.js'; // Adjust the path as needed
@@ -20,8 +17,14 @@ dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+import { sync } from './models/dbSync.js';
+await sync();
+
 import { router as departmentRouter } from './routes/department.js';
+import { router as staffRouter } from './routes/staff.js';
+
 app.use('/department', departmentRouter);
+app.use('/staff', staffRouter);
 
 // Get all courses
 // app.get('/courses', (req, res) => {
