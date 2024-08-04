@@ -1,3 +1,16 @@
+import { pool, Table } from './db.js';
+
+const tableName = 'Course';
+const tableColumns = `
+course_name VARCHAR(100) NOT NULL UNIQUE,
+providerName VARCHAR(100) NOT NULL,
+skill_name VARCHAR(100) NOT NULL,
+PRIMARY KEY (course_name),
+FOREIGN KEY (skill_name) REFERENCES Skill(skill_name)
+`;
+
+const table = new Table(tableName, tableColumns);
+
 // models/course.js
 const courses = [
     {
@@ -57,6 +70,20 @@ const courses = [
       }
     // Other course objects
   ];
-  
-  export const getAllCourses = () => courses;
-  
+
+export const getAllCourses = () => courses;
+
+export const getCoursesByEmail = (email) => {
+  return courses.filter(course => course.email === email);
+};
+
+export const updateCourseStatus = (id, status) => {
+  const course = courses.find(course => course.id === id);
+  if (course) {
+    course.status = status;
+    return course;
+  }
+  return null;
+};
+
+export { table };

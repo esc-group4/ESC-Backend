@@ -2,8 +2,16 @@ import { verifyToken } from '../middleware/verifyToken.js';
 import { getByFirebaseUid } from '../models/staff.js'
 import  express  from 'express'
 
- var tokenRoute = express.Router();
+var router = express.Router();
 
+const dummyUserData = {
+  id: 1,
+  firebase_uid: "abc123",
+  name: "Javier Tan",
+  email: "javiertan@tsh.com",
+  role: "Engineering Manager",
+  department: "employee",
+};
 
 // basically conduct the following after doing the verifyToken method
 tokenRoute.post('/verifyToken', verifyToken, async (req, res) => {
@@ -19,4 +27,4 @@ tokenRoute.post('/verifyToken', verifyToken, async (req, res) => {
       res.status(500).json({ message: "Internal Error" });
     }
   });
-export { tokenRoute };
+export { router };

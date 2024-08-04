@@ -1,46 +1,47 @@
-import { pool } from './db.js';
+import { pool, Table } from './db.js';
 
 const tableName = 'Designation';
+const tableColumns = `
+designation_id INT NOT NULL AUTO_INCREMENT,
+department_name VARCHAR(100) NOT NULL,
+position VARCHAR(100) NOT NULL,
+description VARCHAR(100) NOT NULL,
+PRIMARY  KEY (designation_id),
+FOREIGN KEY (department_name) REFERENCES Department(department_name),
+UNIQUE (position)
+`;
+
+const table = new Table(tableName, tableColumns);
 
 class Designation {
-  constructor(designationId, position) {
-    this.designationId = designationId;
-    this.position = position;
-  }}
-
-   async function sync() {
-    try {
-      await pool.query(`
-        CREATE TABLE IF NOT EXISTS ${tableName} (
-          designationId INT AUTO_INCREMENT PRIMARY KEY,
-          position VARCHAR(255) NOT NULL
-        )
-      `);
-      console.log(`Table ${tableName} created or already exists`);
-    } catch (error) {
-      console.error(`Error creating table ${tableName}:`, error);
-      throw error;
+    constructor(obj) {
+        const columns = [
+            "designation_id",
+            "department_name",
+            "position",
+            "description"
+        ].forEach(name => this[name] = obj[name]);
     }
+}
+
+/**
+ * Get the designation name by ID
+ * @param {number} designationId - The ID of the designation
+ * @returns {string} - The name of the designation
+ */
+ async function getNameById(designationId) {
+  try {
+    const [rows, fieldDefs] = await pool.query(`
+      SELECT position FROM ${tableName} WHERE designationId = ?
+    `, [designationId]);
+    if (rows.length === 0) return null;
+
+    const row = rows[0];
+    return row.position;
+  } catch (error) {
+    console.error(`Error fetching designation by ID:`, error);
+    throw error;
   }
+}
 
-  /**
-   * Get the designation name by ID
-   * @param {number} designationId - The ID of the designation
-   * @returns {string} - The name of the designation
-   */
-   async function getNameById(designationId) {
-    try {
-      const [rows, fieldDefs] = await pool.query(`
-        SELECT position FROM ${tableName} WHERE designationId = ?
-      `, [designationId]);
-      if (rows.length === 0) return null;
-
-      const row = rows[0];
-      return row.position;
-    } catch (error) {
-      console.error(`Error fetching designation by ID:`, error);
-      throw error;
-    }
-  }
-
-export { Designation, getNameById, sync }
+export { Designation, getNameById, table }
