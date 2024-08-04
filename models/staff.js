@@ -1,4 +1,4 @@
-import { pool } from './db.js';
+import { pool, Table } from './db.js';
 
 const tableName = 'Staff';
 const tableColumns = `
@@ -13,48 +13,41 @@ PRIMARY KEY (staff_id),
 FOREIGN KEY (designation_id) REFERENCES Designation(designation_id)
 `;
 
-class Staff {
-  constructor(obj) {
-    const columns = [
-      "staff_id",
-      "staff_name",
-      "staff_email",
-      "staff_password",
-      "staff_hpNum",
-      "designation_id"
-    ].forEach(name => this[name] = obj[name]);
-  }
-}
+const table = new Table(tableName, tableColumns);
 
-async function sync() {
-  try {
-    await pool.query(`CREATE TABLE IF NOT EXISTS ${tableName} (${tableColumns});`);
-  } catch (error) {
-    console.error(`${tableName} failed to sync: `, error);
-    throw error;
-  }
+class Staff {
+    constructor(obj) {
+        const columns = [
+            "staff_id",
+            "staff_name",
+            "staff_email",
+            "staff_password",
+            "staff_hpNum",
+            "designation_id"
+        ].forEach(name => this[name] = obj[name]);
+    }
 }
 
 async function all() {
-  try {
-    const [rows, fieldDefs] = await pool.query(`SELECT * FROM ${tableName}`);
-    return rows.map(row => new Staff(row));
-  } catch (error) {
-    console.error(`Failed to get all ${tableName}s` + error);
-    throw error;
-  }
+    try {
+        const [rows, fieldDefs] = await pool.query(`SELECT * FROM ${tableName}`);
+        return rows.map(row => new Staff(row));
+    } catch (error) {
+        console.error(`Failed to get all ${tableName}s` + error);
+        throw error;
+    }
 }
 
 async function findById(id) {
-  try {
-    const [rows, fieldDefs] = await pool.query(`
+    try {
+        const [rows, fieldDefs] = await pool.query(`
           SELECT * FROM ${tableName} WHERE staff_id = ?`, [id]
-    );
-    return rows.map(row => new Staff(row));
-  } catch (error) {
-    console.error(`Failed to get by ${tableName} id` + error);
-    throw error;
-  }
+        );
+        return rows.map(row => new Staff(row));
+    } catch (error) {
+        console.error(`Failed to get by ${tableName} id` + error);
+        throw error;
+    }
 }
 
-export { sync, all, findById };
+export { table, all, findById };

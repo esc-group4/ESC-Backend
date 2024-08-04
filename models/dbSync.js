@@ -1,10 +1,13 @@
-import { sync as departmentSync } from '../models/department.js';
-import { sync as designationSync } from '../models/designation.js';
-import { sync as staffSync } from '../models/staff.js';
-
-// Requied sync to be in order as certain table is reqqired first before another
+// Requied sync to be in order as certain table is reqired first before another
 export const sync = async () => {
-    await departmentSync();
-    await designationSync();
-    await staffSync();
+    const modelsOrder = [
+        'department',
+        'designation',
+        'staff',
+        'skill'
+    ];
+
+    for (const modelName of modelsOrder) {
+        await import(`../models/${modelName}.js`).then(({ table }) => table.sync());
+    }
 }

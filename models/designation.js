@@ -1,4 +1,4 @@
-import { pool } from './db.js';
+import { pool, Table } from './db.js';
 
 const tableName = 'Designation';
 const tableColumns = `
@@ -11,6 +11,8 @@ FOREIGN KEY (department_name) REFERENCES Department(department_name),
 UNIQUE (position)
 `;
 
+const table = new Table(tableName, tableColumns);
+
 class Designation {
     constructor(obj) {
         const columns = [
@@ -22,13 +24,4 @@ class Designation {
     }
 }
 
-async function sync() {
-    try {
-        await pool.query(`CREATE TABLE IF NOT EXISTS ${tableName} (${tableColumns});`);
-    } catch (error) {
-        console.error(`${tableName} failed to sync: `, error);
-        throw error;
-    }
-}
-
-export { sync };
+export { table };

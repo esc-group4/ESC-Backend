@@ -1,4 +1,4 @@
-import { pool } from './db.js';
+import { pool, Table } from './db.js';
 
 const tableName = 'Department';
 const tableColumns = `
@@ -8,21 +8,14 @@ PRIMARY KEY (department_name),
 UNIQUE (department_name)
 `;
 
+const table = new Table(tableName, tableColumns);
+
 class Department {
   constructor(obj) {
     const columns = [
       "department_name",
       "department_location"
     ].forEach(name => this[name] = obj[name]);
-  }
-}
-
-async function sync() {
-  try {
-    await pool.query(`CREATE TABLE IF NOT EXISTS ${tableName} (${tableColumns});`);
-  } catch (error) {
-    console.error(`${tableName} failed to sync: `, error);
-    throw error;
   }
 }
 
@@ -36,4 +29,4 @@ async function all() {
   }
 }
 
-export { sync, all };
+export { table, all };
