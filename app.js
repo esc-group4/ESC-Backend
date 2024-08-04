@@ -5,18 +5,15 @@ import cors from "cors"; // Add this to the list of imports
 import dotenv from "dotenv"; // Add to import list
 // import { verifyToken } from './middleware/verifyToken.js';
 
-<<<<<<< HEAD
 import { cleanup } from './models/db.js';
 import department from './models/department.js';
 
 department.sync();
-=======
 import { getAllCourses } from './models/course.js'; // Adjust the path as needed
 import { getCoursesByEmail } from './models/course.js'; // Adjust the path as needed
 import { updateCourseStatus } from './models/course.js'; // Adjust the path as needed
 
 
->>>>>>> employee-courses
 
 const app = express();
 app.use(cors());
@@ -29,8 +26,6 @@ app.get('/courses', (req, res) => {
   res.json(getAllCourses());
 });
 
-<<<<<<< HEAD
-=======
 app.get('/courses/:email', (req, res) => {
   const email = req.params.email;
   const userCourses = getCoursesByEmail(email);
@@ -54,7 +49,6 @@ app.put('/courses/:id/status', (req, res) => {
 });
 
 
->>>>>>> employee-courses
 // Middleware to connect to the database on startup
 /* app.use(async (req, res, next) => {
   
@@ -105,14 +99,14 @@ app.get('/staff', async (req, res) => {
   }
 });
 app.get('/staff/:id', async (req, res) => {
-    try {
-      const id = req.params.id;
-      const staff = await getStaff(id);
-      res.send(staff);
-    } catch (err) {
-      console.error('Error retrieving staff id: ', err);
-      res.status(500).send('Error retrieving staff id');
-    }
+  try {
+    const id = req.params.id;
+    const staff = await getStaff(id);
+    res.send(staff);
+  } catch (err) {
+    console.error('Error retrieving staff id: ', err);
+    res.status(500).send('Error retrieving staff id');
+  }
 });
 // Route to insert a new staff member
 app.post('/staff', async (req, res) => {
@@ -130,18 +124,9 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something broke!');
 });
-<<<<<<< HEAD
 
 process.on('SIGINT', cleanup);
 process.on('SIGTERM', cleanup);
-=======
-// Cleanup on shutdown
-process.on('SIGINT', async () => {
-  console.log('Closing database connection pool');
-  await cleanup();
-  process.exit(0);
-});
->>>>>>> employee-courses
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
