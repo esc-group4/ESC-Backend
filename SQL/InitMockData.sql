@@ -9,8 +9,12 @@ INSERT INTO Department (department_name, department_location) VALUES ('Manufactu
 
 INSERT INTO TrainingRequest (type, department_name, course_name) VALUES ('External', 'Manufacturing', 'AED 2024');
 
-INSERT INTO Designation (department_name, position, description) VALUES ('Manufacturing', 'Operator','Opearte Machine');
+INSERT INTO Designation (department_name, position, description) VALUES ('Manufacturing', 'Operator','Operate Machine');
 
-INSERT INTO Staff (staff_name, staff_email, staff_password, designation_id) values ('Benny', 'benny@gmail.com', 'password', 1);
+INSERT INTO Designation (department_name, position, description) VALUES ('Manufacturing', 'Engineering Manager','Opearte Machine');
+
+INSERT INTO Staff (staff_name, staff_email, staff_password, designation_id, firebase_uid) values ('Benny', 'benny@gmail.com', 'password', 1, "abc123");
+
+INSERT INTO Staff (staff_name, staff_email, staff_password, designation_id, firebase_uid) values ('Javier Tan', 'javiertan@tsh.com', 'password', 2, "abc124");
 
 INSERT INTO Training (staff_id, request_id) VALUES (1,1);
