@@ -8,6 +8,7 @@ staff_email VARCHAR(100) NOT NULL,
 staff_password VARCHAR(100) NOT NULL,
 staff_hpNum INT,
 designation_id INT NOT NULL,
+firebase_uid VARCHAR(255) NOT NULL,
 UNIQUE (staff_name),
 PRIMARY KEY (staff_id),
 FOREIGN KEY (designation_id) REFERENCES Designation(designation_id)
@@ -16,38 +17,39 @@ FOREIGN KEY (designation_id) REFERENCES Designation(designation_id)
 const table = new Table(tableName, tableColumns);
 
 class Staff {
-    constructor(obj) {
-        const columns = [
-            "staff_id",
-            "staff_name",
-            "staff_email",
-            "staff_password",
-            "staff_hpNum",
-            "designation_id"
-        ].forEach(name => this[name] = obj[name]);
-    }
+  constructor(obj) {
+    const columns = [
+      "staff_id",
+      "staff_name",
+      "staff_email",
+      "staff_password",
+      "staff_hpNum",
+      "designation_id",
+      "firebase_uid"
+    ].forEach(name => this[name] = obj[name]);
+  }
 }
 
 async function all() {
-    try {
-        const [rows, fieldDefs] = await pool.query(`SELECT * FROM ${tableName}`);
-        return rows.map(row => new Staff(row));
-    } catch (error) {
-        console.error(`Failed to get all ${tableName}s` + error);
-        throw error;
-    }
+  try {
+    const [rows, fieldDefs] = await pool.query(`SELECT * FROM ${tableName}`);
+    return rows.map(row => new Staff(row));
+  } catch (error) {
+    console.error(`Failed to get all ${tableName}s` + error);
+    throw error;
+  }
 }
 
 async function findById(id) {
-    try {
-        const [rows, fieldDefs] = await pool.query(`
+  try {
+    const [rows, fieldDefs] = await pool.query(`
           SELECT * FROM ${tableName} WHERE staff_id = ?`, [id]
-        );
-        return rows.map(row => new Staff(row));
-    } catch (error) {
-        console.error(`Failed to get by ${tableName} id` + error);
-        throw error;
-    }
+    );
+    return rows.map(row => new Staff(row));
+  } catch (error) {
+    console.error(`Failed to get by ${tableName} id` + error);
+    throw error;
+  }
 }
 
 /**
@@ -55,7 +57,7 @@ async function findById(id) {
  * @param {string} firebaseUid - The Firebase UID of the staff
  * @returns {Staff} - The staff object
  */
- async function getByFirebaseUid(firebaseUid) {
+async function getByFirebaseUid(firebaseUid) {
   try {
     const [rows, fieldDefs] = await pool.query(`
       SELECT staffId, name, email, departmentId, designationId, firebase_uid 

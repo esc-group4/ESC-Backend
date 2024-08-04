@@ -1,7 +1,7 @@
 import express from 'express';
 
-import cors from "cors"; 
-import dotenv from "dotenv"; 
+import cors from "cors";
+import dotenv from "dotenv";
 import { courseRoute } from './routes/course.js'
 import { tokenRoute } from './routes/token.js'
 
@@ -106,39 +106,7 @@ const dummyUserData = {
 //   }
 // });
 
-// Route to get all staff
-app.get('/staff', async (req, res) => {
-  try {
-    const staffs = await getAllStaff();
-    res.json(staffs);
-  } catch (err) {
-    console.error('Error retrieving staff: ', err);
-    res.status(500).send('Error retrieving staff');
-  }
-});
 
-app.get('/staff/:id', async (req, res) => {
-  try {
-    const id = req.params.id;
-    const staff = await getStaff(id);
-    res.send(staff);
-  } catch (err) {
-    console.error('Error retrieving staff id: ', err);
-    res.status(500).send('Error retrieving staff id');
-  }
-});
-
-// Route to insert a new staff member
-app.post('/staff', async (req, res) => {
-  try {
-    const newStaff = req.body;
-    const insertedStaff = await insertStaff(newStaff);
-    res.status(201).json(insertedStaff);
-  } catch (err) {
-    console.error('Error inserting staff: ', err);
-    res.status(500).send('Error inserting staff');
-  }
-});
 
 // Error handling middleware
 app.use((err, req, res, next) => {
