@@ -59,15 +59,9 @@ async function findById(id) {
  */
 async function getByFirebaseUid(firebaseUid) {
   try {
-    const [rows, fieldDefs] = await pool.query(`
-      SELECT staffId, name, email, departmentId, designationId, firebase_uid 
-      FROM ${tableName} 
-      WHERE firebase_uid = ?
-    `, [firebaseUid]);
+    const [rows, fieldDefs] = await pool.query(`SELECT * FROM ${tableName} WHERE firebase_uid = ?`, [firebaseUid]);
     if (rows.length === 0) return null;
-
-    const row = rows[0]; // its only 1 row anyways
-    return new Staff(row.id, row.name, row.email, row.departmentId, row.designationId, row.firebase_uid);
+    return new Staff(rows[0]);
   } catch (error) {
     console.error(`Error fetching staff by firebase_uid:`, error);
     throw error;
