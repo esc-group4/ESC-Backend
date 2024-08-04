@@ -6,14 +6,13 @@ import dotenv from "dotenv"; // Add to import list
 // import { verifyToken } from './middleware/verifyToken.js';
 
 import { cleanup } from './models/db.js';
-import department from './models/department.js';
+import { sync } from './models/department.js';
 
-department.sync();
-import { getAllCourses } from './models/course.js'; // Adjust the path as needed
-import { getCoursesByEmail } from './models/course.js'; // Adjust the path as needed
-import { updateCourseStatus } from './models/course.js'; // Adjust the path as needed
+sync();
 
-
+// import { getAllCourses } from './models/course.js'; // Adjust the path as needed
+// import { getCoursesByEmail } from './models/course.js'; // Adjust the path as needed
+// import { updateCourseStatus } from './models/course.js'; // Adjust the path as needed
 
 const app = express();
 app.use(cors());
@@ -21,32 +20,35 @@ dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+import { router as departmentRouter } from './routes/department.js';
+app.use('/department', departmentRouter);
+
 // Get all courses
-app.get('/courses', (req, res) => {
-  res.json(getAllCourses());
-});
+// app.get('/courses', (req, res) => {
+//   res.json(getAllCourses());
+// });
 
-app.get('/courses/:email', (req, res) => {
-  const email = req.params.email;
-  const userCourses = getCoursesByEmail(email);
+// app.get('/courses/:email', (req, res) => {
+//   const email = req.params.email;
+//   const userCourses = getCoursesByEmail(email);
 
-  if (userCourses.length === 0) {
-    return res.status(404).json({ message: 'No courses found for this user' });
-  }
+//   if (userCourses.length === 0) {
+//     return res.status(404).json({ message: 'No courses found for this user' });
+//   }
 
-  res.json(userCourses);
-});
+//   res.json(userCourses);
+// });
 
-app.put('/courses/:id/status', (req, res) => {
-  const { id } = req.params;
-  const { status } = req.body;
-  const updatedCourse = updateCourseStatus(parseInt(id), status);
-  if (updatedCourse) {
-    res.json(updatedCourse);
-  } else {
-    res.status(404).send('Course not found');
-  }
-});
+// app.put('/courses/:id/status', (req, res) => {
+//   const { id } = req.params;
+//   const { status } = req.body;
+//   const updatedCourse = updateCourseStatus(parseInt(id), status);
+//   if (updatedCourse) {
+//     res.json(updatedCourse);
+//   } else {
+//     res.status(404).send('Course not found');
+//   }
+// });
 
 
 // Middleware to connect to the database on startup
@@ -62,6 +64,7 @@ app.put('/courses/:id/status', (req, res) => {
 app.get("/", (req, res) => {
   res.send("working fine");
 });
+
 const dummyUserData = {
   id: 1,
   firebase_uid: "abc123",
@@ -71,23 +74,25 @@ const dummyUserData = {
   department: "employee",
 
 };
-app.post('/verifyToken', verifyToken, async (req, res) => {
-  const uid = req.user.uid;
-  try {
-    /* const [rows] = await db.execute('SELECT * FROM users WHERE firebase_uid = ?', [uid]);
-    
-    if (rows.length === 0) {
-      return res.status(404).send('User not found');
-    }
-    const user = rows[0];
-    res.json(user); */
-    console.log(`Received UID: ${uid}`);
-    res.json(dummyUserData);
-  } catch (error) {
-    console.error('Error querying the database:', error);
-    res.status(500).json({ message: "Internal Error" });
-  }
-});
+
+// app.post('/verifyToken', verifyToken, async (req, res) => {
+//   const uid = req.user.uid;
+//   try {
+//     /* const [rows] = await db.execute('SELECT * FROM users WHERE firebase_uid = ?', [uid]);
+
+//     if (rows.length === 0) {
+//       return res.status(404).send('User not found');
+//     }
+//     const user = rows[0];
+//     res.json(user); */
+//     console.log(`Received UID: ${uid}`);
+//     res.json(dummyUserData);
+//   } catch (error) {
+//     console.error('Error querying the database:', error);
+//     res.status(500).json({ message: "Internal Error" });
+//   }
+// });
+
 // Route to get all staff
 app.get('/staff', async (req, res) => {
   try {
@@ -98,6 +103,7 @@ app.get('/staff', async (req, res) => {
     res.status(500).send('Error retrieving staff');
   }
 });
+
 app.get('/staff/:id', async (req, res) => {
   try {
     const id = req.params.id;
@@ -108,6 +114,7 @@ app.get('/staff/:id', async (req, res) => {
     res.status(500).send('Error retrieving staff id');
   }
 });
+
 // Route to insert a new staff member
 app.post('/staff', async (req, res) => {
   try {
@@ -119,6 +126,7 @@ app.post('/staff', async (req, res) => {
     res.status(500).send('Error inserting staff');
   }
 });
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);

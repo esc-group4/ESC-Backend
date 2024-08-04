@@ -2,6 +2,13 @@ import { pool } from './db.js';
 
 const tableName = 'Department';
 
+class Department {
+  constructor({ department_name, department_location = null }) {
+    this.department_name = department_name;
+    this.department_location = department_location;
+  }
+}
+
 async function sync() {
   try {
     pool.query(`
@@ -17,4 +24,14 @@ async function sync() {
   }
 }
 
-export default { sync };
+async function all() {
+  try {
+    const [rows, fieldDefs] = await pool.query(`SELECT * FROM ${tableName}`);
+    return rows.map(row => new Department(row));
+  } catch (error) {
+    console.error("database connection failed. " + error);
+    throw error;
+  }
+}
+
+export { sync, all };
