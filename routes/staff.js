@@ -1,4 +1,4 @@
-import { all } from '../models/staff.js';
+import { all, findById } from '../models/staff.js';
 import express from 'express';
 const router = express.Router();
 
@@ -11,32 +11,16 @@ router.get('/all', async (req, res) => {
     }
 });
 
+router.get('/:id', async (req, res) => {
+    try {
+        res.json(await await findById(req.params.id));
+    } catch (err) {
+        console.error('Error retrieving staff: ', err);
+        res.status(500).send('Error retrieving staff');
+    }
+});
+
 export { router };
-
-
-// import { getAllStaff, getStaff, insertStaff} from './models/staff.js';
-
-// // Route to get all staff
-// app.get('/staff', async (req, res) => {
-//     try {
-//       const staffs = await getAllStaff();
-//       res.json(staffs);
-//     } catch (err) {
-//       console.error('Error retrieving staff: ', err);
-//       res.status(500).send('Error retrieving staff');
-//     }
-//   });
-  
-// app.get('/staff/:id', async (req, res) => {
-//       try {
-//         const id = req.params.id;
-//         const staff = await getStaff(id);
-//         res.send(staff);
-//       } catch (err) {
-//         console.error('Error retrieving staff id: ', err);
-//         res.status(500).send('Error retrieving staff id');
-//       }
-//   });
   
 // // Route to insert a new staff member
 // app.post('/staff', async (req, res) => {
