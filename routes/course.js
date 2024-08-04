@@ -1,12 +1,16 @@
+import express from 'express';
 import { getAllCourses } from './models/course.js'; 
 import { getCoursesByEmail } from './models/course.js'; 
 import { updateCourseStatus } from './models/course.js'; 
 
-app.get('/courses', (req, res) => {
+var router = express.Router();
+
+router.get('/', (req, res) => {
+    console.log("COURSES ASKED")
     res.json(getAllCourses());
   });
 
-app.get('/courses/:email', (req, res) => {
+router.get('/:email', (req, res) => {
   console.log("Getting courses by email");
   const email = req.params.email;
   const userCourses = getCoursesByEmail(email);
@@ -18,7 +22,7 @@ app.get('/courses/:email', (req, res) => {
   res.json(userCourses);
 });
 
-app.put('/courses/:id/status', (req, res) => {
+router.put('/:id/status', (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
   const updatedCourse = updateCourseStatus(parseInt(id), status);
@@ -28,3 +32,5 @@ app.put('/courses/:id/status', (req, res) => {
     res.status(404).send('Course not found');
   }
 });
+
+export { router };

@@ -24,4 +24,24 @@ class Designation {
     }
 }
 
-export { table };
+/**
+ * Get the designation name by ID
+ * @param {number} designationId - The ID of the designation
+ * @returns {string} - The name of the designation
+ */
+ async function getNameById(designationId) {
+  try {
+    const [rows, fieldDefs] = await pool.query(`
+      SELECT position FROM ${tableName} WHERE designationId = ?
+    `, [designationId]);
+    if (rows.length === 0) return null;
+
+    const row = rows[0];
+    return row.position;
+  } catch (error) {
+    console.error(`Error fetching designation by ID:`, error);
+    throw error;
+  }
+}
+
+export { Designation, getNameById, table }

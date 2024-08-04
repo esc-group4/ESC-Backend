@@ -1,17 +1,22 @@
 import express from 'express';
+
+import cors from "cors"; 
+import dotenv from "dotenv"; 
+import { courseRoute } from './routes/course.js'
+import { tokenRoute } from './routes/token.js'
+
+import { staffsync } from './models/staff.js'
+import { cleanup } from './models/db.js'
+
 // import { getAllStaff, getStaff, insertStaff} from './models/staff.js';
-
-import cors from "cors"; // Add this to the list of imports
-import dotenv from "dotenv"; // Add to import list
 // import { verifyToken } from './middleware/verifyToken.js';
-
-import { cleanup } from './models/db.js';
 
 // import { getAllCourses } from './models/course.js'; // Adjust the path as needed
 // import { getCoursesByEmail } from './models/course.js'; // Adjust the path as needed
 // import { updateCourseStatus } from './models/course.js'; // Adjust the path as needed
 
 const app = express();
+staffsync()
 app.use(cors());
 dotenv.config();
 app.use(express.json());
@@ -41,6 +46,11 @@ app.use('/staff', staffRouter);
 
 //   res.json(userCourses);
 // });
+
+
+app.use('/course', courseRoute);
+//app.use('/staff', staffRoute);
+app.use('/token', tokenRoute);
 
 // app.put('/courses/:id/status', (req, res) => {
 //   const { id } = req.params;
@@ -139,7 +149,8 @@ app.use((err, req, res, next) => {
 process.on('SIGINT', cleanup);
 process.on('SIGTERM', cleanup);
 
-const PORT = process.env.PORT || 3001;
+const PORT = process.env.PORT || 8080;
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });

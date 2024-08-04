@@ -1,5 +1,8 @@
-import { verifyToken } from './middleware/verifyToken.js';
-import express from 'express';
+import { verifyToken } from '../middleware/verifyToken.js';
+import { getByFirebaseUid } from '../models/staff.js'
+import  express  from 'express'
+
+var router = express.Router();
 
 const dummyUserData = {
   id: 1,
@@ -8,26 +11,20 @@ const dummyUserData = {
   email: "javiertan@tsh.com",
   role: "Engineering Manager",
   department: "employee",
-
 };
 
-app.post('/verifyToken', verifyToken, async (req, res) => {
+// basically conduct the following after doing the verifyToken method
+tokenRoute.post('/verifyToken', verifyToken, async (req, res) => {
     const uid = req.user.uid;
-  
+    console.log(uid)
+
     try {
-  
-      /* const [rows] = await db.execute('SELECT * FROM users WHERE firebase_uid = ?', [uid]);
-      
-      if (rows.length === 0) {
-        return res.status(404).send('User not found');
-      }
-  
-      const user = rows[0];
-      res.json(user); */
+        const staff = await getByFirebaseUid(uid)
       console.log(`Received UID: ${uid}`);
-      res.json(dummyUserData1);
+      res.json(staff);
     } catch (error) {
       console.error('Error querying the database:', error);
       res.status(500).json({ message: "Internal Error" });
     }
   });
+export { router };
