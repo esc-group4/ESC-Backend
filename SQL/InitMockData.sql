@@ -3,7 +3,7 @@
 -- Mock Data
 INSERT INTO Skill (skill_name) VALUES ('AED'), ('ERP'), ('Microsoft Office');
 
-INSERT INTO Course (course_name, providerName, skill_name) VALUES ('AED 2024','SUTD', 'AED');
+INSERT INTO Course (course_name, providerName, skill_name, course_description, course_location) VALUES ('AED 2024','SUTD', 'AED', "Life saving course", "3 Fusionopolis Link, Singapore 138542");
 
 INSERT INTO Department (department_name, department_location) VALUES ('Manufacturing', 'AMK');
 
