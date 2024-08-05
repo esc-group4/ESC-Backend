@@ -18,15 +18,16 @@ CREATE TABLE Designation (
 
 -- Require Designation -> Department
 CREATE TABLE Staff (
-	staff_id INT NOT NULL AUTO_INCREMENT,
+    staff_id INT NOT NULL AUTO_INCREMENT,
     staff_name VARCHAR(100) NOT NULL,
     staff_email VARCHAR(100) NOT NULL,
     staff_password VARCHAR(100) NOT NULL,
     staff_hpNum INT,
     designation_id INT NOT NULL,
+    firebase_uid VARCHAR(255) NOT NULL,
     UNIQUE (staff_name),
     PRIMARY KEY (staff_id),
-	FOREIGN KEY (designation_id) REFERENCES Designation(designation_id)
+    FOREIGN KEY (designation_id) REFERENCES Designation(designation_id)
 );
 
 CREATE TABLE Skill (
