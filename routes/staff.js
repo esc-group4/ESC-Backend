@@ -13,7 +13,7 @@ router.get('/all', async (req, res) => {
 
 router.get('/:id', async (req, res) => {
     try {
-        res.json(await await findById(req.params.id));
+        res.json(await findById(req.params.id));
     } catch (err) {
         console.error('Error retrieving staff: ', err);
         res.status(500).send('Error retrieving staff');
