@@ -7,7 +7,7 @@ INSERT INTO Course (course_name, providerName, skill_name, course_description, c
 
 INSERT INTO Department (department_name, department_location) VALUES ('Manufacturing', 'AMK');
 
-INSERT INTO TrainingRequest (type, department_name, course_name) VALUES ('External', 'Manufacturing', 'AED 2024');
+INSERT INTO TrainingRequest (type, department_name, course_name, startDate, endDate) VALUES ('External', 'Manufacturing', 'AED 2024', CURDATE(), CURDATE() + INTERVAL 1 DAY);
 
 INSERT INTO Designation (department_name, position, description) VALUES ('Manufacturing', 'Operator','Operate Machine');
 
