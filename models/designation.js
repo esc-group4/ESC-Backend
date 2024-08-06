@@ -1,6 +1,6 @@
-import { pool, Table } from './db.js';
+import { pool, Table } from "./db.js";
 
-const tableName = 'Designation';
+const tableName = "Designation";
 const tableColumns = `
 designation_id INT NOT NULL AUTO_INCREMENT,
 department_name VARCHAR(100) NOT NULL,
@@ -14,14 +14,14 @@ UNIQUE (position)
 const table = new Table(tableName, tableColumns);
 
 class Designation {
-    constructor(obj) {
-        const columns = [
-            "designation_id",
-            "department_name",
-            "position",
-            "description"
-        ].forEach(name => this[name] = obj[name]);
-    }
+  constructor(obj) {
+    const columns = [
+      "designation_id",
+      "department_name",
+      "position",
+      "description",
+    ].forEach((name) => (this[name] = obj[name]));
+  }
 }
 
 /**
@@ -29,11 +29,14 @@ class Designation {
  * @param {number} designationId - The ID of the designation
  * @returns {string} - The name of the designation
  */
- async function getNameById(designationId) {
+async function getNameById(designationId) {
   try {
-    const [rows, fieldDefs] = await pool.query(`
+    const [rows, fieldDefs] = await pool.query(
+      `
       SELECT position FROM ${tableName} WHERE designationId = ?
-    `, [designationId]);
+    `,
+      [designationId]
+    );
     if (rows.length === 0) return null;
 
     const row = rows[0];
@@ -44,4 +47,4 @@ class Designation {
   }
 }
 
-export { Designation, getNameById, table }
+export { Designation, getNameById, table };

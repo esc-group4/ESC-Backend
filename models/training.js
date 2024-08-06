@@ -1,6 +1,6 @@
-import { pool, Table } from './db.js';
+import { pool, Table } from "./db.js";
 
-const tableName = 'Training';
+const tableName = "Training";
 const tableColumns = `
 grade VARCHAR(2),
 attendance BOOL DEFAULT 0 NOT NULL,
@@ -12,7 +12,20 @@ FOREIGN KEY (staff_id) REFERENCES Staff(staff_id)
 
 const table = new Table(tableName, tableColumns);
 
-export { table };
+async function updateAttendance(request_id, staff_id) {
+  try {
+    const [rows, fieldDefs] = await pool.query(
+      `UPDATE ${tableName} SET attendance = 1 WHERE request_id = ? AND staff_id = ?`,
+      [request_id, staff_id]
+    );
+    return rows.affectedRows;
+  } catch (error) {
+    console.error(`Failed to get by ${tableName} id` + error);
+    throw error;
+  }
+}
+
+export { table, updateAttendance };
 
 // export async function getAllTraining() {
 //     try {
@@ -25,7 +38,6 @@ export { table };
 //     }
 //   }
 
-
 //   export async function getAllExternalTraining() {
 //     try {
 //       const poolRequest = pool.request();
@@ -36,7 +48,7 @@ export { table };
 //       throw err;
 //     }
 //   }
-  
+
 //   export async function getAllInternalTraining() {
 //     try {
 //       const poolRequest = pool.request();
