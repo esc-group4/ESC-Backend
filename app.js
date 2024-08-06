@@ -1,10 +1,12 @@
 import express from 'express';
-import { getAllStaff, getStaff, insertStaff} from './models/staff.js';
-import { connectToDatabase, cleanup } from './models/db.js'; // Assuming db connection functions are in db.js
-import cors from "cors"; // Add this to the list of imports
-import dotenv from "dotenv"; // Add to import list
-import { verifyToken } from './middleware/verifyToken.js';
-
+import cors from 'cors';
+import dotenv from 'dotenv';
+import { cleanup } from './models/db.js';
+import { sync } from './models/dbSync.js';
+import { router as departmentRouter } from './routes/department.js';
+import { router as staffRouter } from './routes/staff.js';
+import { router as courseRouter } from './routes/course.js';
+import { router as tokenRouter } from './routes/token.js';
 
 const app = express();
 app.use(cors());
@@ -12,19 +14,12 @@ dotenv.config();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
+await sync();
 
-
-
-// Middleware to connect to the database on startup
-app.use(async (req, res, next) => {
-  try {
-    await connectToDatabase();
-    next();
-  } catch (err) {
-    console.error('Database connection error: ', err);
-    res.status(500).send('Database connection error');
-  }
-});
+app.use('/department', departmentRouter);
+app.use('/staff', staffRouter);
+app.use('/course', courseRouter);
+app.use('/token', tokenRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -32,14 +27,9 @@ app.use((err, req, res, next) => {
   res.status(500).send('Something broke!');
 });
 
-// Cleanup on shutdown
-process.on('SIGINT', async () => {
-  console.log('Closing database connection pool');
-  await cleanup();
-  process.exit(0);
-});
+process.on('SIGINT', cleanup);
+process.on('SIGTERM', cleanup);
 
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+
+app.listen(PORT, _ => console.log(`Server is running on port ${PORT}`));
