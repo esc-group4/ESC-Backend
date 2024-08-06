@@ -21,4 +21,33 @@ UNIQUE (request_id)
 
 const table = new Table(tableName, tableColumns);
 
-export { table };
+class TrainingRequest {
+    constructor({ request_id, course_name, status, type, date, personnel }) {
+        this.status = "Pending";
+        if (status == 1) this.status = new Date(new Date()) > this.date ? "Completed" : "Approved";
+        this.request_id = request_id;
+        this.course_name = course_name;
+        this.type = type;
+        this.date = date;
+        this.personnel = personnel;
+    }
+}
+
+async function getTrainingRequest(department_name) {
+    try {
+        const [rows] = await pool.query(
+            `SELECT request_id, course_name, type, status, endDate as date, 
+            (SELECT count(*) FROM Training where Training.request_id = TrainingRequest.request_id group by Training.request_id) as personnel 
+            FROM TrainingRequest 
+            WHERE department_name = ?;`,
+            [department_name]
+        );
+        return rows.map(row => new TrainingRequest(row));
+    } catch (error) {
+        console.error(`Failed to get ${tableName}` + error);
+        throw error;
+    }
+}
+
+
+export { table, getTrainingRequest };
