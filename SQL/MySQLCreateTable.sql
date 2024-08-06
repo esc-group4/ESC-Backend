@@ -74,5 +74,6 @@ CREATE TABLE Training (
     request_id INT NOT NULL,
 	FOREIGN KEY (request_id) REFERENCES TrainingRequest(request_id),
     staff_id int NOT NULL,
-    FOREIGN KEY (staff_id) REFERENCES Staff(staff_id)
+    FOREIGN KEY (staff_id) REFERENCES Staff(staff_id),
+    PRIMARY KEY (request_id, staff_id)
 );
