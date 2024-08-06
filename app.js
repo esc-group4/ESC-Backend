@@ -7,6 +7,7 @@ import { router as departmentRouter } from './routes/department.js';
 import { router as staffRouter } from './routes/staff.js';
 import { router as courseRouter } from './routes/course.js';
 import { router as tokenRouter } from './routes/token.js';
+import { router as notificationRouter } from './routes/notification.js';
 
 const app = express();
 app.use(cors());
@@ -20,11 +21,12 @@ app.use('/department', departmentRouter);
 app.use('/staff', staffRouter);
 app.use('/course', courseRouter);
 app.use('/token', tokenRouter);
+app.use('/notification', notificationRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
 });
 
 process.on('SIGINT', cleanup);
