@@ -5,7 +5,6 @@ const tableColumns = `
 staff_id INT NOT NULL AUTO_INCREMENT,
 staff_name VARCHAR(100) NOT NULL,
 staff_email VARCHAR(100) NOT NULL,
-staff_password VARCHAR(100) NOT NULL,
 staff_hpNum INT,
 designation_id INT NOT NULL,
 firebase_uid VARCHAR(255) NOT NULL,
@@ -22,7 +21,6 @@ class Staff {
             "staff_id",
             "staff_name",
             "staff_email",
-            "staff_password",
             "staff_hpNum",
             "designation_id",
             "firebase_uid"

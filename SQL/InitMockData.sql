@@ -21,11 +21,11 @@ INSERT INTO Designation (department_name, position, description) VALUES ('Manufa
 
 INSERT INTO Designation (department_name, position, description) VALUES ('Manufacturing', 'Engineering Manager','Opearte Machine');
 
-INSERT INTO Staff (staff_name, staff_email, staff_password, designation_id, firebase_uid) values ('Benny', 'benny@gmail.com', 'password', 1, "abc123");
+INSERT INTO Staff (staff_name, staff_email, designation_id, firebase_uid) values ('Benny', 'benny@gmail.com', 1, "abc123");
 
-INSERT INTO Staff (staff_name, staff_email, staff_password, designation_id, firebase_uid) values ('Javier Tan', 'javiertan@tsh.com', 'password', 2, "abc124");
+INSERT INTO Staff (staff_name, staff_email, designation_id, firebase_uid) values ('Javier Tan', 'javiertan@tsh.com', 2, "abc124");
 
-INSERT INTO Staff (staff_name, staff_email, staff_password, designation_id, firebase_uid, staff_hpNum) values ('Xiaoyang', 'hoxiaoyang321@gmail.com', 'password', 2, "abc125", 89116194);
+INSERT INTO Staff (staff_name, staff_email, designation_id, firebase_uid, staff_hpNum) values ('Xiaoyang', 'hoxiaoyang321@gmail.com', 2, "abc125", 89116194);
 
 INSERT INTO Training (staff_id, request_id) VALUES (1,1);
 
