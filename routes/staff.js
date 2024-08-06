@@ -4,6 +4,7 @@ import {
   findById,
   findByCredentials,
   getByFirebaseUid,
+  getAllByDepartmentName
 } from "../models/staff.js";
 
 const router = express.Router();
@@ -39,6 +40,15 @@ router.post("/login", async (req, res) => {
     console.error("Error logging in: ", err);
     res.status(500).send("Error logging in");
   }
+});
+
+router.get('/:department_name/all', async (req, res) => {
+    try {
+        res.json(await getAllByDepartmentName(req.params.department_name));
+    } catch (err) {
+        console.error('Error retrieving staff: ', err);
+        res.status(500).send('Error retrieving staff');
+    }
 });
 
 export { router };
