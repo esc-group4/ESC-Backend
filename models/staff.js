@@ -50,6 +50,30 @@ async function findById(id) {
     }
 }
 
+class StaffDepartmentRole {
+    constructor({ staff_id, staff_name, position, description }) {
+        this.staff_id = staff_id;
+        this.staff_name = staff_name;
+        this.position = position;
+        this.description = description;
+    }
+}
+
+async function getAllByDepartmentName(department_name) {
+    try {
+        const [rows] = await pool.query(`
+            SELECT staff_id, staff_name, position, description FROM Staff
+            INNER JOIN Designation
+            ON Designation.designation_id = Staff.designation_id
+            WHERE department_name = ?`, [department_name]
+        );
+        return rows.map(row => new StaffDepartmentRole(row));
+    } catch (error) {
+        console.error(`Failed to get by ${tableName}` + error);
+        throw error;
+    }
+}
+
 class StaffDetail {
     constructor(obj) {
         const columns = [
@@ -83,4 +107,4 @@ async function getByFirebaseUid(firebaseUid) {
     }
 }
 
-export { Staff, getByFirebaseUid, table, all, findById } 
+export { Staff, getByFirebaseUid, table, all, findById, getAllByDepartmentName } 
