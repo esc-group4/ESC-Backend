@@ -13,20 +13,32 @@ INSERT INTO Course (course_name, providerName, skill_name, course_description, c
 
 INSERT INTO Department (department_name, department_location) VALUES ('Manufacturing', 'AMK');
 
+INSERT INTO Department (department_name, department_location) VALUES ('Admin', 'Bedok');
+
 INSERT INTO TrainingRequest (type, department_name, course_name, startDate, endDate) VALUES ('External', 'Manufacturing', 'AED 2024', CURDATE(), CURDATE() + INTERVAL 1 DAY);
 
 INSERT INTO TrainingRequest (type, department_name, course_name, startDate, endDate) VALUES ('External', 'Manufacturing', 'AED 2024', CURDATE() + INTERVAL 7 DAY, CURDATE() + INTERVAL 8 DAY);
 
-INSERT INTO Designation (department_name, position, description) VALUES ('Manufacturing', 'Operator','Operate Machine');
+INSERT INTO Designation (department_name, position, description) VALUES ('Manufacturing', 'Operator', 'Operate Machine');
 
-INSERT INTO Designation (department_name, position, description) VALUES ('Manufacturing', 'Engineering Manager','Opearte Machine');
+INSERT INTO Designation (department_name, position, description) VALUES ('Manufacturing', 'HOD', 'Head of Department for Manufacturing');
 
-INSERT INTO Staff (staff_name, staff_email, staff_password, designation_id, firebase_uid) values ('Benny', 'benny@gmail.com', 'password', 1, "abc123");
+INSERT INTO Designation (department_name, position, description) VALUES ('Admin', 'HR', 'Training and Development HR');
 
-INSERT INTO Staff (staff_name, staff_email, staff_password, designation_id, firebase_uid) values ('Javier Tan', 'javiertan@tsh.com', 'password', 2, "abc124");
+INSERT INTO Staff (staff_name, staff_email, designation_id, firebase_uid) values ('Benny', 'benny@example.com', 1, "abc123");
 
-INSERT INTO Staff (staff_name, staff_email, staff_password, designation_id, firebase_uid, staff_hpNum) values ('Xiaoyang', 'hoxiaoyang321@gmail.com', 'password', 2, "abc125", 89116194);
+INSERT INTO Staff (staff_name, staff_email, designation_id, firebase_uid) values ('Daniel', 'daniel@example.com', 1, "abc127");
+
+INSERT INTO Staff (staff_name, staff_email, designation_id, firebase_uid) values ('Albert', 'albert@example.com', 1, "abc128");
+
+INSERT INTO Staff (staff_name, staff_email, designation_id, firebase_uid) values ('Javier Tan', 'javiertan@example.com', 2, "abc124");
+
+INSERT INTO Staff (staff_name, staff_email, designation_id, firebase_uid, staff_hpNum) values ('Xiaoyang', 'hoxiaoyang321@gmail.com', 3, "abc125", 89116194);
 
 INSERT INTO Training (staff_id, request_id) VALUES (1,1);
 
-INSERT INTO Training (staff_id, request_id) VALUES (2,3);
+INSERT INTO Training (staff_id, request_id) VALUES (2,1);
+
+INSERT INTO Training (staff_id, request_id) VALUES (3,1);
+
+INSERT INTO Training (staff_id, request_id) VALUES (5,2);
