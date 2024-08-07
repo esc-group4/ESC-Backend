@@ -56,8 +56,8 @@ class TrainingCourse {
 
   computeStatus() {
     const current_date = new Date(new Date().toDateString());
-    if (current_date <= this.startDate) return "Upcoming";
     if (this.attendance == 1) return "Completed";
+    if (current_date <= this.endDate) return "Upcoming";
     if (current_date > this.endDate && this.attendance == 0) return "Expired";
     return "Invalid Status";
   }
