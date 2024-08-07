@@ -51,14 +51,15 @@ INSERT INTO Department (department_name, department_location) VALUES
 ('Research & Development', 'One-North');
 
 -- Training Requests (7)
-INSERT INTO TrainingRequest (type, department_name, course_name, startDate, endDate) VALUES 
-('External', 'Manufacturing', 'AED 2024', CURDATE(), CURDATE() + INTERVAL 1 DAY),
-('External', 'Manufacturing', 'AED 2024', CURDATE() + INTERVAL 7 DAY, CURDATE() + INTERVAL 8 DAY),
-('Internal', 'IT', 'Cybersecurity 2024', CURDATE() + INTERVAL 14 DAY, CURDATE() + INTERVAL 16 DAY),
-('External', 'Sales', 'Digital Marketing Strategy', CURDATE() + INTERVAL 21 DAY, CURDATE() + INTERVAL 23 DAY),
-('Internal', 'Engineering', 'ERP Fundamentals', CURDATE() + INTERVAL 28 DAY, CURDATE() + INTERVAL 30 DAY),
-('External', 'Finance', 'Advanced Excel', CURDATE() + INTERVAL 35 DAY, CURDATE() + INTERVAL 36 DAY),
-('Internal', 'Human Resources', 'Leadership Development Program', CURDATE() + INTERVAL 42 DAY, CURDATE() + INTERVAL 44 DAY);
+INSERT INTO TrainingRequest (type, department_name, course_name, startDate, endDate, trainerEmail) VALUES 
+('External', 'Manufacturing', 'AED 2024', CURDATE(), CURDATE() + INTERVAL 1 DAY, "hoxiaoyang321@gmail.com"),
+('External', 'Manufacturing', 'AED 2024', CURDATE() + INTERVAL 7 DAY, CURDATE() + INTERVAL 8 DAY, "hoxiaoyang321@gmail.com"),
+('Internal', 'IT', 'Cybersecurity 2024', CURDATE() + INTERVAL 14 DAY, CURDATE() + INTERVAL 16 DAY, "hoxiaoyang321@gmail.com"),
+('External', 'Sales', 'Digital Marketing Strategy', CURDATE() + INTERVAL 21 DAY, CURDATE() + INTERVAL 23 DAY, "hoxiaoyang321@gmail.com"),
+('Internal', 'Engineering', 'ERP Fundamentals', CURDATE() + INTERVAL 28 DAY, CURDATE() + INTERVAL 30 DAY, "hoxiaoyang321@gmail.com"),
+('External', 'Finance', 'Advanced Excel', CURDATE() + INTERVAL 35 DAY, CURDATE() + INTERVAL 36 DAY, "hoxiaoyang321@gmail.com"),
+('Internal', 'Human Resources', 'Leadership Development Program', CURDATE() + INTERVAL 42 DAY, CURDATE() + INTERVAL 44 DAY, "hoxiaoyang321@gmail.com"),
+('External', 'Human Resources', 'Leadership Development Program', CURDATE() + INTERVAL 1 DAY, CURDATE() + INTERVAL 44 DAY, "hoxiaoyang321@gmail.com");
 
 -- Designations (10, one for each department)
 INSERT INTO Designation (department_name, position, description) VALUES 
