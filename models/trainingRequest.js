@@ -49,5 +49,18 @@ async function getTrainingRequest(department_name) {
     }
 }
 
+async function create(type, reasons, startDate, endDate, trainerEmail, department_name, course_name) {
+    try {
+        const [rows] = await pool.query(
+            `INSERT INTO tsh.TrainingRequest (type, reasons, startDate, endDate, trainerEmail, department_name, course_name)
+            VALUES (?,?,?,?,?,?,?)`, [type, reasons, startDate, endDate, trainerEmail, department_name, course_name]
+        );
+        if (rows.affectedRows == 0) throw new Error("Fail to create Training Request, affectedrow = 0");
+    } catch (error) {
+        console.error(`Failed to get ${tableName}` + error);
+        throw error;
+    }
+}
 
-export { table, getTrainingRequest };
+
+export { table, getTrainingRequest, create };
