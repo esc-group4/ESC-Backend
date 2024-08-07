@@ -50,12 +50,12 @@ async function getTrainingRequestAll() { // this is used for the HR page
 }
 
 
-async function getTrainingRequestDetails(trainingrequestid) {
+async function getTrainingRequestDetails(request_id) {
     try {
         const [rows] = await pool.query(
-            `SELECT request_id, course_name, type, status, reasons, endDate as date, 
-            FROM TrainingRequest
-            WHERE request_id = ?;`,
+            `SELECT request_id, course_name, type, status, reasons, endDate as date
+            FROM ${tableName}
+            WHERE request_id = ?`,
             [request_id]
         );
         return rows.map(row => new TrainingRequest(row));
