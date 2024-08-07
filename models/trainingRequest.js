@@ -22,7 +22,7 @@ UNIQUE (request_id)
 const table = new Table(tableName, tableColumns);
 
 class TrainingRequest {
-    constructor({ request_id, course_name, status, type, date, personnel,department_name = undefined }) {
+    constructor({ request_id, course_name, status, type, date, personnel, department_name = undefined }) {
         this.status = "Pending";
         if (status == 1) this.status = new Date(new Date()) > this.date ? "Completed" : "Approved";
         this.request_id = request_id;
@@ -112,4 +112,23 @@ async function updateStatus(request_id) {
     }
 }
 
-export { table, getTrainingRequest, create, updateStatus, getTrainingRequestAll,getTrainingRequestDetails };
+class TrainerInfo {
+    constructor({ request_id, trainerEmail }) {
+        this.trainerEmail = trainerEmail;
+        this.request_id = request_id;
+    }
+}
+
+async function getProcessedTrainerInfo() {
+    try {
+        const [rows] = await pool.query(
+            `SELECT request_id, trainerEmail FROM ${tableName} WHERE startDate = CURDATE() + INTERVAL 1 DAY;`
+        );
+        return rows.map(row => new TrainerInfo(row));
+    } catch (error) {
+        console.error(`Failed to get processed ${tableName} for trainer:` + error);
+        throw error;
+    }
+}
+
+export { table, getTrainingRequest, create, updateStatus, getProcessedTrainerInfo, getTrainingRequestAll, getTrainingRequestDetails };

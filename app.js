@@ -12,6 +12,7 @@ import { router as notificationRouter } from "./routes/notification.js";
 import { router as hodRouter } from "./routes/hod.js";
 import { router as trainingRequestRouter } from "./routes/trainingRequest.js";
 import { router as designationRouter } from "./routes/designation.js";
+import { router as trainerRouter } from "./routes/trainer.js";
 
 const app = express();
 app.use(cors());
@@ -30,11 +31,12 @@ app.use("/notification", notificationRouter);
 app.use("/hod", hodRouter);
 app.use("/trainingrequest", trainingRequestRouter);
 app.use("/designation", designationRouter);
+app.use("/trainer", trainerRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something broke!");
+    console.error(err.stack);
+    res.status(500).send("Something broke!");
 });
 
 process.on("SIGINT", cleanup);
