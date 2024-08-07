@@ -33,7 +33,7 @@ async function getNameById(designationId) {
   try {
     const [rows, fieldDefs] = await pool.query(
       `
-      SELECT position FROM ${tableName} WHERE designationId = ?
+      SELECT position FROM ${tableName} WHERE designation_Id = ?
     `,
       [designationId]
     );
