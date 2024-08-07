@@ -33,6 +33,21 @@ class TrainingRequest {
     }
 }
 
+
+async function getTrainingRequestAll() {
+    try {
+        const [rows] = await pool.query(
+            `SELECT request_id, course_name, type, status, endDate as date, 
+            (SELECT count(*) FROM Training where Training.request_id = TrainingRequest.request_id group by Training.request_id) as personnel 
+            FROM TrainingRequest; `,
+        );
+        return rows.map(row => new TrainingRequest(row));
+    } catch (error) {
+        console.error(`Failed to get ${tableName}` + error);
+        throw error;
+    }
+}
+
 async function getTrainingRequest(department_name) {
     try {
         const [rows] = await pool.query(
@@ -77,4 +92,4 @@ async function updateStatus(request_id) {
     }
 }
 
-export { table, getTrainingRequest, create, updateStatus };
+export { table, getTrainingRequest, create, updateStatus, getTrainingRequestAll };
