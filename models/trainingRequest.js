@@ -48,6 +48,25 @@ async function getTrainingRequestAll() {
     }
 }
 
+
+async function getTrainingRequestDetails(trainingrequestid) {
+    try {
+        const [rows] = await pool.query(
+            `SELECT request_id, course_name, type, status, reasons, endDate as date, 
+            FROM TrainingRequest
+            WHERE request_id = ?;`,
+            [request_id]
+        );
+        return rows.map(row => new TrainingRequest(row));
+    } catch (error) {
+        console.error(`Failed to get ${tableName}` + error);
+        throw error;
+    }
+}
+
+
+
+
 async function getTrainingRequest(department_name) {
     try {
         const [rows] = await pool.query(
