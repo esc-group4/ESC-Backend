@@ -1,4 +1,4 @@
-import { create as createTrainingRequest } from "../models/trainingRequest.js";
+import { create as createTrainingRequest, updateStatus } from "../models/trainingRequest.js";
 import { createMany as createManyTraining } from "../models/training.js";
 import express from "express";
 var router = express.Router();
@@ -19,6 +19,17 @@ router.post("/", async (req, res) => {
     } catch (error) {
         console.error("Error creating training request:", error);
         res.status(500).json({ message: "Internal Error" });
+    }
+});
+
+router.put("/status/:request_id", async (req, res) => {
+    try {
+        const affectedrow = await updateStatus(req.params.request_id);
+        if (affectedrow == 0) res.status(400).send("Invalid request_id");
+        res.status(201).send("Successful update training request status");
+    } catch (err) {
+        console.error("Error updating request_id: ", err);
+        res.status(500).send("Error retrieving staff");
     }
 });
 

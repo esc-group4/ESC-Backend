@@ -64,5 +64,17 @@ async function create(type, reasons, startDate, endDate, trainerEmail, departmen
     }
 }
 
+async function updateStatus(request_id) {
+    try {
+        const [rows] = await pool.query(
+            `UPDATE ${tableName} SET status = 1 WHERE request_id = ?`,
+            [request_id]
+        );
+        return rows.affectedRows;
+    } catch (error) {
+        console.error(`Failed to get ${tableName} by request_id and staff_id:` + error);
+        throw error;
+    }
+}
 
-export { table, getTrainingRequest, create };
+export { table, getTrainingRequest, create, updateStatus };
