@@ -77,4 +77,23 @@ async function updateStatus(request_id) {
     }
 }
 
-export { table, getTrainingRequest, create, updateStatus };
+class TrainerInfo {
+    constructor({ request_id, trainerEmail }) {
+        this.trainerEmail = trainerEmail;
+        this.request_id = request_id;
+    }
+}
+
+async function getProcessedTrainerInfo() {
+    try {
+        const [rows] = await pool.query(
+            `SELECT request_id, trainerEmail FROM ${tableName} WHERE startDate = CURDATE() + INTERVAL 1 DAY;`
+        );
+        return rows.map(row => new TrainerInfo(row));
+    } catch (error) {
+        console.error(`Failed to get processed ${tableName} for trainer:` + error);
+        throw error;
+    }
+}
+
+export { table, getTrainingRequest, create, updateStatus, getProcessedTrainerInfo };
