@@ -11,6 +11,7 @@ import { router as attendanceRouter } from "./routes/attendance.js";
 import { router as notificationRouter } from "./routes/notification.js";
 import { router as attendanceRouter } from "./routes/attendance.js";
 import { router as hodRouter } from "./routes/hod.js";
+import { router as designationRouter } from "./routes/designation.js";
 
 const app = express();
 app.use(cors());
@@ -28,6 +29,7 @@ app.use("/attendance", attendanceRouter);
 app.use("/notification", notificationRouter);
 app.use("/attendance", attendanceRouter);
 app.use("/hod", hodRouter);
+app.use("/designation", designationRouter);
 
 // Error handling middleware
 app.use((err, req, res, next) => {
