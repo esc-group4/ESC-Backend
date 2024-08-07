@@ -25,15 +25,20 @@ async function updateAttendance(request_id, staff_id) {
     }
 }
 
-async function getStaffId(request_id) {
+async function getStaffsByRequestId(request_id) {
     try {
-        const [rows] = await pool.query(
-            `SELECT staff_id
-            FROM Training
-            WHERE request_id = ?;`,
+        const [rows] = await pool.query(`
+            SELECT Training.staff_id, staff_name FROM ${tableName}
+            LEFT JOIN Staff
+            ON Staff.staff_id = Training.staff_id
+            WHERE request_id = ?`,
             [request_id]
         );
-        return rows.map(row => row.staff_id); // we j want a list of staffid
+        console.log(rows);
+
+        return rows.map(({ staff_id, staff_name }) => {
+            return { staff_id, staff_name };
+        });
     } catch (error) {
         console.error(`Failed to get ${tableName}` + error);
         throw error;
@@ -56,4 +61,4 @@ async function createMany(request_id, staff_ids) {
     }
 }
 
-export { table, updateAttendance, createMany, getStaffId };
+export { table, updateAttendance, createMany, getStaffsByRequestId };
