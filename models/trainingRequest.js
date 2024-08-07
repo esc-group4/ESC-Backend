@@ -1,4 +1,4 @@
-import { pool, Table } from './db.js';
+import { pool, Table, getLastInsertID } from './db.js';
 
 const tableName = 'TrainingRequest';
 const tableColumns = `
@@ -49,5 +49,32 @@ async function getTrainingRequest(department_name) {
     }
 }
 
+async function create(type, reasons, startDate, endDate, trainerEmail, department_name, course_name) {
+    try {
+        const [rows] = await pool.query(
+            `INSERT INTO tsh.TrainingRequest (type, reasons, startDate, endDate, trainerEmail, department_name, course_name)
+            VALUES (?,?,?,?,?,?,?)`, [type, reasons, startDate, endDate, trainerEmail, department_name, course_name]
+        );
+        if (rows.affectedRows == 0) throw new Error("Fail to create Training Request, affectedrow = 0");
+        const request_id = await getLastInsertID();
+        return request_id;
+    } catch (error) {
+        console.error(`Failed to get ${tableName}` + error);
+        throw error;
+    }
+}
 
-export { table, getTrainingRequest };
+async function updateStatus(request_id) {
+    try {
+        const [rows] = await pool.query(
+            `UPDATE ${tableName} SET status = 1 WHERE request_id = ?`,
+            [request_id]
+        );
+        return rows.affectedRows;
+    } catch (error) {
+        console.error(`Failed to get ${tableName} by request_id and staff_id:` + error);
+        throw error;
+    }
+}
+
+export { table, getTrainingRequest, create, updateStatus };
