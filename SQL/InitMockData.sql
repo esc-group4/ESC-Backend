@@ -25,15 +25,15 @@ INSERT INTO Designation (department_name, position, description) VALUES ('Manufa
 
 INSERT INTO Designation (department_name, position, description) VALUES ('Admin', 'HR', 'Training and Development HR');
 
-INSERT INTO Staff (staff_name, staff_email, designation_id, firebase_uid) values ('Benny', 'benny@example.com', 1, "abc123");
+INSERT INTO Staff (staff_name, staff_email, designation_id, firebase_uid, staff_password) values ('Benny', 'benny@example.com', 1, "abc123", "password");
 
-INSERT INTO Staff (staff_name, staff_email, designation_id, firebase_uid) values ('Daniel', 'daniel@example.com', 1, "abc127");
+INSERT INTO Staff (staff_name, staff_email, designation_id, firebase_uid, staff_password) values ('Daniel', 'daniel@example.com', 1, "abc127", "password");
 
-INSERT INTO Staff (staff_name, staff_email, designation_id, firebase_uid) values ('Albert', 'albert@example.com', 1, "abc128");
+INSERT INTO Staff (staff_name, staff_email, designation_id, firebase_uid, staff_password) values ('Albert', 'albert@example.com', 1, "abc128", "password");
 
-INSERT INTO Staff (staff_name, staff_email, designation_id, firebase_uid) values ('Javier Tan', 'javiertan@example.com', 2, "abc124");
+INSERT INTO Staff (staff_name, staff_email, designation_id, firebase_uid, staff_password) values ('Javier Tan', 'javiertan@example.com', 2, "abc124", "password");
 
-INSERT INTO Staff (staff_name, staff_email, designation_id, firebase_uid, staff_hpNum) values ('Xiaoyang', 'hoxiaoyang321@gmail.com', 3, "abc125", 89116194);
+INSERT INTO Staff (staff_name, staff_email, designation_id, firebase_uid, staff_hpNum, staff_password) values ('Xiaoyang', 'hoxiaoyang321@gmail.com', 3, "abc125", 89116194, "password");
 
 INSERT INTO Training (staff_id, request_id) VALUES (1,1);
 
