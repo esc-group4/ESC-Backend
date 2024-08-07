@@ -9,7 +9,6 @@ import { router as courseRouter } from "./routes/course.js";
 import { router as tokenRouter } from "./routes/token.js";
 import { router as attendanceRouter } from "./routes/attendance.js";
 import { router as notificationRouter } from "./routes/notification.js";
-import { router as attendanceRouter } from "./routes/attendance.js";
 import { router as hodRouter } from "./routes/hod.js";
 
 const app = express();
@@ -26,7 +25,6 @@ app.use("/course", courseRouter);
 app.use("/token", tokenRouter);
 app.use("/attendance", attendanceRouter);
 app.use("/notification", notificationRouter);
-app.use("/attendance", attendanceRouter);
 app.use("/hod", hodRouter);
 
 // Error handling middleware
