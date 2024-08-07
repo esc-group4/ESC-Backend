@@ -22,7 +22,7 @@ UNIQUE (request_id)
 const table = new Table(tableName, tableColumns);
 
 class TrainingRequest {
-    constructor({ request_id, course_name, status, type, date, personnel }) {
+    constructor({ request_id, course_name, status, type, date, personnel, department_name = undefined }) {
         this.status = "Pending";
         if (status == 1) this.status = new Date(new Date()) > this.date ? "Completed" : "Approved";
         this.request_id = request_id;
@@ -30,8 +30,43 @@ class TrainingRequest {
         this.type = type;
         this.date = date;
         this.personnel = personnel;
+        this.department_name = department_name
     }
 }
+
+
+async function getTrainingRequestAll() { // this is used for the HR page
+    try {
+        const [rows] = await pool.query(
+            `SELECT request_id, course_name,department_name, type, status, endDate as date,  
+            (SELECT count(*) FROM Training where Training.request_id = TrainingRequest.request_id group by Training.request_id) as personnel 
+            FROM TrainingRequest; `,
+        );
+        return rows.map(row => new TrainingRequest(row));
+    } catch (error) {
+        console.error(`Failed to get ${tableName}` + error);
+        throw error;
+    }
+}
+
+
+async function getTrainingRequestDetails(trainingrequestid) {
+    try {
+        const [rows] = await pool.query(
+            `SELECT request_id, course_name, type, status, reasons, endDate as date, 
+            FROM TrainingRequest
+            WHERE request_id = ?;`,
+            [request_id]
+        );
+        return rows.map(row => new TrainingRequest(row));
+    } catch (error) {
+        console.error(`Failed to get ${tableName}` + error);
+        throw error;
+    }
+}
+
+
+
 
 async function getTrainingRequest(department_name) {
     try {
@@ -96,4 +131,4 @@ async function getProcessedTrainerInfo() {
     }
 }
 
-export { table, getTrainingRequest, create, updateStatus, getProcessedTrainerInfo };
+export { table, getTrainingRequest, create, updateStatus, getProcessedTrainerInfo, getTrainingRequestAll, getTrainingRequestDetails };

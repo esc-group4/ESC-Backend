@@ -25,6 +25,22 @@ async function updateAttendance(request_id, staff_id) {
     }
 }
 
+async function getStaffId(request_id) {
+    try {
+        const [rows] = await pool.query(
+            `SELECT staff_id
+            FROM Training
+            WHERE request_id = ?;`,
+            [request_id]
+        );
+        return rows.map(row => row.staff_id); // we j want a list of staffid
+    } catch (error) {
+        console.error(`Failed to get ${tableName}` + error);
+        throw error;
+    }
+}
+
+
 // https://stackoverflow.com/questions/74846069/how-to-bulk-insert-into-sql-using-myql2
 async function createMany(request_id, staff_ids) {
     try {
@@ -40,4 +56,4 @@ async function createMany(request_id, staff_ids) {
     }
 }
 
-export { table, updateAttendance, createMany };
+export { table, updateAttendance, createMany, getStaffId };

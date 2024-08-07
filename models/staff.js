@@ -53,6 +53,34 @@ async function findById(id) {
     }
 }
 
+async function getStaffbyList(lstOfStaffId) {
+  try {
+      if (lstOfStaffId.length === 0) {
+          return [];
+      }
+
+      const [rows] = await pool.query(
+          `SELECT 
+              staff_id, 
+              staff_name
+           FROM 
+              Staff 
+           WHERE 
+              staff_id IN (?);`,
+          [lstOfStaffId]
+      );
+
+      return rows.map(row => new Staff(row));
+  } catch (error) {
+      console.error(`Failed to get ${tableName}: ${error.message}`);
+      throw error;
+  }
+}
+
+
+
+
+
 class StaffDepartmentRole {
     constructor({ staff_id, staff_name, position, description }) {
         this.staff_id = staff_id;
@@ -133,4 +161,4 @@ async function findByCredentials(email, password) {
     }
 }
 
-export { Staff, getByFirebaseUid, table, all, findById, findByCredentials, getAllByDepartmentName };
+export { Staff, getByFirebaseUid, table, all, findById, findByCredentials, getAllByDepartmentName, getStaffbyList };
