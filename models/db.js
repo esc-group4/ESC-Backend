@@ -42,4 +42,9 @@ class Table {
     }
 }
 
-export { pool, cleanup, Table };
+async function getLastInsertID() {
+    const [rows] = await pool.query("SELECT LAST_INSERT_ID()");
+    return rows[0]['LAST_INSERT_ID()'];
+}
+
+export { pool, cleanup, Table, getLastInsertID };

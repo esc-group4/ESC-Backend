@@ -1,4 +1,4 @@
-import { pool, Table } from './db.js';
+import { pool, Table, getLastInsertID } from './db.js';
 
 const tableName = 'TrainingRequest';
 const tableColumns = `
@@ -56,6 +56,8 @@ async function create(type, reasons, startDate, endDate, trainerEmail, departmen
             VALUES (?,?,?,?,?,?,?)`, [type, reasons, startDate, endDate, trainerEmail, department_name, course_name]
         );
         if (rows.affectedRows == 0) throw new Error("Fail to create Training Request, affectedrow = 0");
+        const request_id = await getLastInsertID();
+        return request_id;
     } catch (error) {
         console.error(`Failed to get ${tableName}` + error);
         throw error;
