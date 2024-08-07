@@ -1,4 +1,5 @@
-import { getTrainingRequest,getTrainingRequestDetails } from '../models/trainingRequest.js';
+import { getTrainingRequest, getTrainingRequestDetails } from '../models/trainingRequest.js';
+import { getStaffsByRequestId } from '../models/training.js';
 import express from 'express';
 const router = express.Router();
 
@@ -11,20 +12,16 @@ router.get("/trainingrequest/:department_name", async (req, res) => {
     }
 });
 
-
-router.get("/trainingrequest/:request_id", async (req, res) => {
+router.get("/trainingrequest/detail/:request_id", async (req, res) => {
+    const { request_id } = req.params;
     try {
-        trainingReqDetails = await getTrainingRequestDetails(req.params.request_id)
-        stafflst = await getStaffId(req.params.request_id);
-        staffDetails = await getStaffbyList(stafflst);
-        const combinedDetails = {
-            trainingRequest: trainingReqDetails,
-            staff: staffDetails
-        };
-        res.json(combinedDetails);
+        res.json({
+            trainingRequest: await getTrainingRequestDetails(request_id),
+            staff: await getStaffsByRequestId(request_id)
+        });
     } catch (err) {
-        console.error('Error retrieving department: ', err);
-        res.status(500).send('Error retrieving department');
+        console.error('Error retrieving training request detail: ', err);
+        res.status(500).send('Error retrieving training request detail');
     }
 });
 

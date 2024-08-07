@@ -119,18 +119,26 @@ INSERT INTO Staff (staff_name, staff_email, designation_id, firebase_uid, staff_
 ('Natalie Teo', 'natalie@TSH.com', 5, 'abc162', 95678904, "password");
 
 -- Training (15)
-INSERT INTO Training (staff_id, request_id) VALUES 
-(1,1),
-(2,1),
-(3,1),
-(5,2),
-(6,3),
-(7,3),
-(8,4),
-(9,4),
-(10,5),
-(11,5),
-(12,6),
-(13,6),
-(14,7),
-(15,7);
+INSERT INTO Training (staff_id, request_id, attendance, grade) VALUES 
+-- Multiple staff in a course (AED 2024, request_id 1)
+(1, 1, 1, 'A'),
+(2, 1, 1, 'B'),
+(3, 1, 1, 'A'),
+(4, 1, 0, NULL),
+(5, 1, 1, 'B'),
+
+-- One staff in multiple training requests (staff_id 6)
+(6, 2, 1, 'A'),
+(6, 4, 1, 'B'),
+(6, 6, 0, NULL),
+
+-- Additional entries to populate the table
+(7, 2, 1, 'B'),
+(13, 4, 1, 'A'),
+(14, 5, 1, 'B'),
+(15, 5, 0, NULL),
+(16, 6, 1, 'A'),
+(17, 7, 1, 'B'),
+(18, 7, 1, 'A'),
+(19, 8, 0, NULL),
+(20, 8, 1, 'B');

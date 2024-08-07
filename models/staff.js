@@ -53,34 +53,6 @@ async function findById(id) {
     }
 }
 
-async function getStaffbyList(lstOfStaffId) {
-  try {
-      if (lstOfStaffId.length === 0) {
-          return [];
-      }
-
-      const [rows] = await pool.query(
-          `SELECT 
-              staff_id, 
-              staff_name
-           FROM 
-              Staff 
-           WHERE 
-              staff_id IN (?);`,
-          [lstOfStaffId]
-      );
-
-      return rows.map(row => new Staff(row));
-  } catch (error) {
-      console.error(`Failed to get ${tableName}: ${error.message}`);
-      throw error;
-  }
-}
-
-
-
-
-
 class StaffDepartmentRole {
     constructor({ staff_id, staff_name, position, description }) {
         this.staff_id = staff_id;
@@ -106,11 +78,12 @@ async function getAllByDepartmentName(department_name) {
 }
 
 class StaffDetail {
-    constructor({ staff_id, staff_name, staff_email, role }) {
+    constructor({ staff_id, staff_name, staff_email, role, department_name }) {
         this.staff_id = staff_id;
         this.staff_name = staff_name;
         this.staff_email = staff_email;
         this.role = role;
+        this.department_name = department_name;
     }
 }
 
@@ -146,7 +119,8 @@ async function getByFirebaseUid(firebaseUid) {
 async function findByCredentials(email, password) {
     try {
         const [rows] = await pool.query(`
-            SELECT staff_id, staff_name, staff_email, position as role FROM ${tableName}
+            SELECT staff_id, staff_name, staff_email, position as role, department_name
+            FROM ${tableName}
             LEFT JOIN Designation
             ON Staff.designation_id = Designation.designation_id
             WHERE staff_email = ? AND staff_password = ?
@@ -161,4 +135,4 @@ async function findByCredentials(email, password) {
     }
 }
 
-export { Staff, getByFirebaseUid, table, all, findById, findByCredentials, getAllByDepartmentName, getStaffbyList };
+export { Staff, getByFirebaseUid, table, all, findById, findByCredentials, getAllByDepartmentName };
