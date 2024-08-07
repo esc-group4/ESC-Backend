@@ -1,13 +1,16 @@
--- Skill (15 skills)
+-- Will only work right after Create Table as Training Required staff_id and request_id which are auto incremented --
+-- Mock Data
+
+-- Skills (15)
 INSERT INTO Skill (skill_name) VALUES 
 ('AED'),
 ('ERP'),
 ('Microsoft Office'),
+('Cybersecurity'),
 ('Project Management'),
 ('Data Analysis'),
 ('Customer Service'),
 ('Machine Learning'),
-('Cybersecurity'),
 ('Digital Marketing'),
 ('Agile Methodology'),
 ('Cloud Computing'),
@@ -16,27 +19,28 @@ INSERT INTO Skill (skill_name) VALUES
 ('Time Management'),
 ('Negotiation');
 
--- Course (15 courses)
+-- Courses (15)
 INSERT INTO Course (course_name, providerName, skill_name, course_description, course_location) VALUES 
-('AED 2024','SUTD', 'AED', 'Life Saving Course', '3 Fusionopolis Link, Singapore 138542'),
-('Intro to ERP', 'SUTD', 'ERP', 'Traffic Management', '8 Somapah Road, Singapore 487372'),
-('Microsoft Office Advanced', 'SUTD', 'Microsoft Office', 'Advanced Excel', '10 Collyer Quay, Singapore 049315'),
-('PMP Certification', 'PMI', 'Project Management', 'Project Management Professional', '1 Marina Boulevard, Singapore 018989'),
-('Data Science Bootcamp', 'NUS', 'Data Analysis', 'Intensive Data Science Course', '21 Lower Kent Ridge Rd, Singapore 119077'),
-('Customer Experience Mastery', 'SHATEC', 'Customer Service', 'Enhancing Customer Satisfaction', '21 Bukit Batok Street 22, Singapore 659589'),
-('Machine Learning Fundamentals', 'NTU', 'Machine Learning', 'Introduction to ML Algorithms', '50 Nanyang Ave, Singapore 639798'),
-('Cybersecurity Essentials', 'CISCO', 'Cybersecurity', 'Network Security Basics', '80 Pasir Panjang Road, Singapore 117372'),
-('Digital Marketing Strategy', 'Google', 'Digital Marketing', 'Online Marketing Techniques', '70 Pasir Panjang Road, Singapore 117371'),
-('Agile Scrum Master', 'Scrum Alliance', 'Agile Methodology', 'Agile Project Management', '1 Raffles Place, Singapore 048616'),
-('AWS Certified Solutions Architect', 'Amazon', 'Cloud Computing', 'Cloud Architecture Design', '23 Church Street, Singapore 049481'),
-('Power BI Masterclass', 'Microsoft', 'Business Intelligence', 'Data Visualization', '182 Cecil Street, Singapore 069547'),
-('Leadership Development Program', 'CCL', 'Leadership', 'Developing Leadership Skills', '89 Neil Road, Singapore 088849'),
-('Effective Time Management', 'FranklinCovey', 'Time Management', 'Productivity Improvement', '1 Raffles Place, Singapore 048616'),
-('Negotiation Skills Workshop', 'Harvard Business School', 'Negotiation', 'Advanced Negotiation Techniques', '51 Bras Basah Road, Singapore 189554');
+('AED 2024','SUTD', 'AED', 'Life saving course', '3 Fusionopolis Link, Singapore 138542'),
+('Cybersecurity 2024','SUTD', 'Cybersecurity', 'Network security basics', '8 Somapah Rd, Singapore 487372'),
+('ERP Fundamentals', 'NUS', 'ERP', 'Introduction to Enterprise Resource Planning', '21 Lower Kent Ridge Rd, Singapore 119077'),
+('Advanced Excel', 'Microsoft', 'Microsoft Office', 'Advanced spreadsheet techniques', '182 Cecil Street, Singapore 069547'),
+('Project Management Professional', 'PMI', 'Project Management', 'PMP certification preparation', '80 Middle Road, Singapore 188966'),
+('Data Science Bootcamp', 'Datacamp', 'Data Analysis', 'Comprehensive data analysis course', '79 Anson Road, Singapore 079906'),
+('Customer Experience Mastery', 'SHATEC', 'Customer Service', 'Enhancing customer satisfaction', '21 Bukit Batok Street 22, Singapore 659589'),
+('Machine Learning Fundamentals', 'NTU', 'Machine Learning', 'Introduction to ML algorithms', '50 Nanyang Ave, Singapore 639798'),
+('Digital Marketing Strategy', 'Google', 'Digital Marketing', 'Online marketing techniques', '70 Pasir Panjang Road, Singapore 117371'),
+('Agile Scrum Master', 'Scrum Alliance', 'Agile Methodology', 'Agile project management', '1 Raffles Place, Singapore 048616'),
+('AWS Certified Solutions Architect', 'Amazon', 'Cloud Computing', 'Cloud architecture design', '23 Church Street, Singapore 049481'),
+('Power BI Masterclass', 'Microsoft', 'Business Intelligence', 'Data visualization techniques', '182 Cecil Street, Singapore 069547'),
+('Leadership Development Program', 'CCL', 'Leadership', 'Developing leadership skills', '89 Neil Road, Singapore 088849'),
+('Time Management Workshop', 'FranklinCovey', 'Time Management', 'Productivity improvement techniques', '1 Raffles Place, Singapore 048616'),
+('Negotiation Skills', 'Harvard Business School', 'Negotiation', 'Advanced negotiation techniques', '51 Bras Basah Road, Singapore 189554');
 
--- Department (10 departments)
+-- Departments (10)
 INSERT INTO Department (department_name, department_location) VALUES 
 ('Manufacturing', 'AMK'),
+('Admin', 'Bedok'),
 ('Engineering', 'Jurong'),
 ('Sales', 'CBD'),
 ('IT', 'Changi'),
@@ -44,89 +48,88 @@ INSERT INTO Department (department_name, department_location) VALUES
 ('Finance', 'Raffles Place'),
 ('Marketing', 'Orchard'),
 ('Customer Support', 'Novena'),
-('Research & Development', 'One-North'),
-('Operations', 'Woodlands');
+('Research & Development', 'One-North');
 
--- TrainingRequest (7 requests)
+-- Training Requests (7)
 INSERT INTO TrainingRequest (type, department_name, course_name, startDate, endDate) VALUES 
 ('External', 'Manufacturing', 'AED 2024', CURDATE(), CURDATE() + INTERVAL 1 DAY),
-('Internal', 'Engineering', 'Intro to ERP', CURDATE() + INTERVAL 1 WEEK, CURDATE() + INTERVAL 1 DAY),
-('External', 'Sales', 'Microsoft Office Advanced', CURDATE() + INTERVAL 3 MONTH , CURDATE() + INTERVAL 3 DAY),
-('External', 'IT', 'Cybersecurity Essentials', CURDATE(), CURDATE() + INTERVAL 2 DAY),
-('Internal', 'Human Resources', 'Customer Experience Mastery', CURDATE() + INTERVAL 3 DAY, CURDATE() + INTERVAL 1 DAY),
-('External', 'Finance', 'Data Science Bootcamp', CURDATE() + INTERVAL 1 MONTH, CURDATE() + INTERVAL 5 DAY),
-('External', 'Marketing', 'Digital Marketing Strategy', CURDATE(), CURDATE() + INTERVAL 2 DAY);
+('External', 'Manufacturing', 'AED 2024', CURDATE() + INTERVAL 7 DAY, CURDATE() + INTERVAL 8 DAY),
+('Internal', 'IT', 'Cybersecurity 2024', CURDATE() + INTERVAL 14 DAY, CURDATE() + INTERVAL 16 DAY),
+('External', 'Sales', 'Digital Marketing Strategy', CURDATE() + INTERVAL 21 DAY, CURDATE() + INTERVAL 23 DAY),
+('Internal', 'Engineering', 'ERP Fundamentals', CURDATE() + INTERVAL 28 DAY, CURDATE() + INTERVAL 30 DAY),
+('External', 'Finance', 'Advanced Excel', CURDATE() + INTERVAL 35 DAY, CURDATE() + INTERVAL 36 DAY),
+('Internal', 'Human Resources', 'Leadership Development Program', CURDATE() + INTERVAL 42 DAY, CURDATE() + INTERVAL 44 DAY);
 
--- Designation (10 designations, one for each department)
+-- Designations (10, one for each department)
 INSERT INTO Designation (department_name, position, description) VALUES 
 ('Manufacturing', 'Operator', 'Operate Machine'),
-('Engineering', 'Engineer', 'Maintenance System'),
-('Sales', 'Account Manager', 'Managing Account'),
-('IT', 'System Administrator', 'Manage IT Infrastructure'),
-('Human Resources', 'HR Manager', 'Oversee HR Functions'),
-('Finance', 'Financial Analyst', 'Analyze Financial Data'),
-('Marketing', 'Marketing Specialist', 'Develop Marketing Strategies'),
-('Customer Support', 'Support Representative', 'Assist Customers'),
-('Research & Development', 'Research Scientist', 'Conduct Research'),
-('Operations', 'Operations Manager', 'Manage Daily Operations');
+('Manufacturing', 'HOD', 'Head of Department for Manufacturing'),
+('Admin', 'HR', 'Training and Development HR'),
+('Engineering', 'Engineer', 'Design and maintain systems'),
+('Sales', 'Sales Representative', 'Manage client accounts'),
+('IT', 'System Administrator', 'Manage IT infrastructure'),
+('Human Resources', 'HR Manager', 'Oversee HR functions'),
+('Finance', 'Financial Analyst', 'Analyze financial data'),
+('Marketing', 'Marketing Specialist', 'Develop marketing strategies'),
+('Customer Support', 'Support Representative', 'Assist customers'),
+('Research & Development', 'Research Scientist', 'Conduct research');
 
--- Staff (40 staff members)
-INSERT INTO Staff (staff_name, staff_email, staff_password, designation_id, firebase_uid) VALUES 
-('Benny', 'benny@gmail.com', 'password', 1, 'abc123'),
-('Alice', 'alice@gmail.com', 'password123', 2, 'def456'),
-('John', 'john@gmail.com', 'password456', 3, 'ghi789'),
-('Emma', 'emma@gmail.com', 'password789', 4, 'jkl012'),
-('Michael', 'michael@gmail.com', 'passwordabc', 5, 'mno345'),
-('Sarah', 'sarah@gmail.com', 'passworddef', 6, 'pqr678'),
-('David', 'david@gmail.com', 'passwordghi', 7, 'stu901'),
-('Lisa', 'lisa@gmail.com', 'passwordjkl', 8, 'vwx234'),
-('Ryan', 'ryan@gmail.com', 'passwordmno', 9, 'yz567a'),
-('Olivia', 'olivia@gmail.com', 'passwordpqr', 10, 'bcd890'),
-('Daniel', 'daniel@gmail.com', 'passwordstu', 1, 'efg123'),
-('Sophia', 'sophia@gmail.com', 'passwordvwx', 2, 'hij456'),
-('Matthew', 'matthew@gmail.com', 'passwordyz1', 3, 'klm789'),
-('Emily', 'emily@gmail.com', 'password234', 4, 'nop012'),
-('Andrew', 'andrew@gmail.com', 'password567', 5, 'qrs345'),
-('Ava', 'ava@gmail.com', 'password890', 6, 'tuv678'),
-('William', 'william@gmail.com', 'passwordabc1', 7, 'wxy901'),
-('Isabella', 'isabella@gmail.com', 'passworddef2', 8, 'zab234'),
-('James', 'james@gmail.com', 'passwordghi3', 9, 'cde567'),
-('Mia', 'mia@gmail.com', 'passwordjkl4', 10, 'fgh890'),
-('Benjamin', 'benjamin@gmail.com', 'passwordmno5', 1, 'ijk123'),
-('Charlotte', 'charlotte@gmail.com', 'passwordpqr6', 2, 'lmn456'),
-('Jacob', 'jacob@gmail.com', 'passwordstu7', 3, 'opq789'),
-('Amelia', 'amelia@gmail.com', 'passwordvwx8', 4, 'rst012'),
-('Ethan', 'ethan@gmail.com', 'passwordyz9', 5, 'uvw345'),
-('Harper', 'harper@gmail.com', 'password0123', 6, 'xyz678'),
-('Alexander', 'alexander@gmail.com', 'password4567', 7, 'abc901'),
-('Abigail', 'abigail@gmail.com', 'password8901', 8, 'def234'),
-('Henry', 'henry@gmail.com', 'passwordabcd', 9, 'ghi567'),
-('Emily', 'emily2@gmail.com', 'passwordefgh', 10, 'jkl890'),
-('Samuel', 'samuel@gmail.com', 'passwordijkl', 1, 'mno123'),
-('Elizabeth', 'elizabeth@gmail.com', 'passwordmnop', 2, 'pqr456'),
-('Joseph', 'joseph@gmail.com', 'passwordqrst', 3, 'stu789'),
-('Avery', 'avery@gmail.com', 'passworduvwx', 4, 'vwx012'),
-('Christopher', 'christopher@gmail.com', 'passwordyzab', 5, 'yza345'),
-('Sofia', 'sofia@gmail.com', 'passwordcdef', 6, 'bcd678'),
-('Andrew', 'andrew2@gmail.com', 'passwordghij', 7, 'efg901'),
-('Scarlett', 'scarlett@gmail.com', 'passwordklmn', 8, 'hij234'),
-('David', 'david2@gmail.com', 'passwordopqr', 9, 'klm567'),
-('Grace', 'grace@gmail.com', 'passwordstuv', 10, 'nop890');
+-- Staff (40)
+INSERT INTO Staff (staff_name, staff_email, designation_id, firebase_uid, staff_hpNum) VALUES 
+('Benny', 'benny@example.com', 1, 'abc123', NULL),
+('Daniel', 'daniel@example.com', 1, 'abc127', NULL),
+('Albert', 'albert@example.com', 1, 'abc128', NULL),
+('Javier Tan', 'javiertan@example.com', 2, 'abc124', NULL),
+('Xiaoyang', 'hoxiaoyang321@gmail.com', 3, 'abc125', 89116194),
+('Emma Lee', 'emma@example.com', 4, 'abc126', 91234567),
+('Michael Tan', 'michael@example.com', 5, 'abc129', 92345678),
+('Sarah Wong', 'sarah@example.com', 6, 'abc130', 93456789),
+('David Lim', 'david@example.com', 7, 'abc131', 94567890),
+('Lisa Ng', 'lisa@example.com', 8, 'abc132', 95678901),
+('Ryan Goh', 'ryan@example.com', 9, 'abc133', 96789012),
+('Olivia Chua', 'olivia@example.com', 10, 'abc134', 97890123),
+('Ethan Teo', 'ethan@example.com', 11, 'abc135', 98901234),
+('Sophia Koh', 'sophia@example.com', 1, 'abc136', 99012345),
+('William Yeo', 'william@example.com', 2, 'abc137', 90123456),
+('Isabella Tan', 'isabella@example.com', 3, 'abc138', 91234568),
+('James Lee', 'james@example.com', 4, 'abc139', 92345679),
+('Mia Lim', 'mia@example.com', 5, 'abc140', 93456780),
+('Benjamin Ng', 'benjamin@example.com', 6, 'abc141', 94567891),
+('Charlotte Goh', 'charlotte@example.com', 7, 'abc142', 95678902),
+('Lucas Chua', 'lucas@example.com', 8, 'abc143', 96789013),
+('Amelia Teo', 'amelia@example.com', 9, 'abc144', 97890124),
+('Henry Koh', 'henry@example.com', 10, 'abc145', 98901235),
+('Ava Yeo', 'ava@example.com', 11, 'abc146', 99012346),
+('Alexander Tan', 'alexander@example.com', 1, 'abc147', 90123457),
+('Evelyn Lee', 'evelyn@example.com', 2, 'abc148', 91234569),
+('Daniel Lim', 'daniel2@example.com', 3, 'abc149', 92345680),
+('Sofia Ng', 'sofia@example.com', 4, 'abc150', 93456781),
+('Matthew Goh', 'matthew@example.com', 5, 'abc151', 94567892),
+('Chloe Chua', 'chloe@example.com', 6, 'abc152', 95678903),
+('Andrew Teo', 'andrew@example.com', 7, 'abc153', 96789014),
+('Zoe Koh', 'zoe@example.com', 8, 'abc154', 97890125),
+('Christopher Yeo', 'christopher@example.com', 9, 'abc155', 98901236),
+('Lily Tan', 'lily@example.com', 10, 'abc156', 99012347),
+('Joseph Lee', 'joseph@example.com', 11, 'abc157', 90123458),
+('Grace Lim', 'grace@example.com', 1, 'abc158', 91234570),
+('Samuel Ng', 'samuel@example.com', 2, 'abc159', 92345681),
+('Audrey Goh', 'audrey@example.com', 3, 'abc160', 93456782),
+('Dylan Chua', 'dylan@example.com', 4, 'abc161', 94567893),
+('Natalie Teo', 'natalie@example.com', 5, 'abc162', 95678904);
 
--- Training Records (15 records)
-INSERT INTO Training (staff_id, request_id, attendance) VALUES
-(1, 1, TRUE),
-(2, 1, TRUE),
-(3, 2, FALSE),
-(4, 2, TRUE),
-(5, 3, TRUE),
-(6, 3, FALSE),
-(7, 4, TRUE),
-(8, 4, TRUE),
-(9, 5, FALSE),
-(10, 5, TRUE),
-(11, 6, TRUE),
-(12, 6, FALSE),
-(13, 7, TRUE),
-(14, 7, TRUE),
-(15, 1, FALSE);
+-- Training (15)
+INSERT INTO Training (staff_id, request_id) VALUES 
+(1,1),
+(2,1),
+(3,1),
+(5,2),
+(6,3),
+(7,3),
+(8,4),
+(9,4),
+(10,5),
+(11,5),
+(12,6),
+(13,6),
+(14,7),
+(15,7);
