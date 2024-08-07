@@ -22,7 +22,7 @@ UNIQUE (request_id)
 const table = new Table(tableName, tableColumns);
 
 class TrainingRequest {
-    constructor({ request_id, course_name, status, type, date, personnel, department_name = undefined }) {
+    constructor({ request_id, course_name, status, type, date, personnel, reasons, department_name = undefined }) {
         this.status = "Pending";
         if (status == 1) this.status = new Date(new Date()) > this.date ? "Completed" : "Approved";
         this.request_id = request_id;
@@ -30,10 +30,10 @@ class TrainingRequest {
         this.type = type;
         this.date = date;
         this.personnel = personnel;
-        this.department_name = department_name
+        this.department_name = department_name;
+        this.reasons = reasons;
     }
 }
-
 
 async function getTrainingRequestAll() { // this is used for the HR page
     try {
@@ -49,24 +49,21 @@ async function getTrainingRequestAll() { // this is used for the HR page
     }
 }
 
-
 async function getTrainingRequestDetails(request_id) {
     try {
         const [rows] = await pool.query(
-            `SELECT request_id, course_name, type, status, reasons, endDate as date
+            `SELECT request_id, course_name, type, status, reasons, endDate as date, reasons
             FROM ${tableName}
             WHERE request_id = ?`,
             [request_id]
         );
-        return rows.map(row => new TrainingRequest(row));
+        if (rows.length == 0) return null;
+        return new TrainingRequest(rows[0]);
     } catch (error) {
         console.error(`Failed to get ${tableName}` + error);
         throw error;
     }
 }
-
-
-
 
 async function getTrainingRequest(department_name) {
     try {
