@@ -1,7 +1,7 @@
 {
   "name": "escsql",
   "version": "1.0.0",
-  "description": "",
+  "description": "- [Docker Desktop](https://www.docker.com/products/docker-desktop/) (Optional for quickly set up MySQL Server)\r - [NPM](https://www.npmjs.com/)",
   "main": "app.js",
   "type": "module",
   "scripts": {
@@ -24,5 +24,8 @@
   "devDependencies": {
     "nodemon": "^3.1.4",
     "supertest": "^7.0.0"
+  },
+  "directories": {
+    "test": "tests"
   }
 }
