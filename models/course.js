@@ -87,4 +87,4 @@ async function byStaffId(id) {
   }
 }
 
-export { table, all, byStaffId };
+export { TrainingCourse, table, all, byStaffId };

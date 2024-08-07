@@ -5,7 +5,7 @@ import { updateAttendance } from '../models/training';
 
 jest.mock('../models/training');
 
-describe('Attendance Router Integration Tests', () => {
+describe('ATTENDANCE UPDATE PUT /:request_id/:staff_id', () => {
   let app;
 
   beforeAll(() => {
