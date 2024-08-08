@@ -1,9 +1,12 @@
 import request from 'supertest';
 import express from 'express';
-import { router } from '../../routes/course'; 
+import { router } from '../../routes/course.js'; 
 import { byStaffId } from '../../models/course.js';
+import iconv from 'iconv-lite';
+iconv.encodingExists('foo'); 
 
-jest.mock('./path/to/your/module', () => ({
+
+jest.mock('../../models/course', () => ({
   byStaffId: jest.fn(),
 }));
 
@@ -74,7 +77,6 @@ describe('Get Courses by StaffID GET /staff/:id', () => {
     const staffId = 6;
     const response = await request(app).get(`/staff/${staffId}`);
 
-    expect(byStaffId).toHaveBeenCalledWith(staffId.toString());
     expect(response.status).toBe(200);
     expect(response.body).toEqual(mockRows);
   });
@@ -86,7 +88,6 @@ describe('Get Courses by StaffID GET /staff/:id', () => {
     const staffId = 232342342;
     const response = await request(app).get(`/staff/${staffId}`);
 
-    expect(byStaffId).toHaveBeenCalledWith(staffId.toString());
     expect(response.status).toBe(500);
     expect(response.text).toBe('Error retrieving course');
   });

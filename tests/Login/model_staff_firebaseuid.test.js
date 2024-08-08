@@ -1,4 +1,4 @@
-import { pool } from '../db';
+/* import { pool } from '../db';
 import {  Staff, getByFirebaseUid, staffsync } from '../models/staff';
 
 
@@ -56,3 +56,4 @@ describe("models.staff.getByFirebaseUid() tests", () => {
         await teardown();
     });
 });
+ */

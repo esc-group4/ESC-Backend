@@ -55,10 +55,14 @@ class TrainingCourse {
   }
 
   computeStatus() {
-    const current_date = new Date(new Date().toDateString());
-    if (this.attendance == 1) return "Completed";
-    if (current_date <= this.endDate) return "Upcoming";
-    if (current_date > this.endDate && this.attendance == 0) return "Expired";
+    const currentDate = new Date();
+      const endDate = new Date(this.endDate);
+      const normalizedCurrentDate = new Date(currentDate.toDateString());
+    const normalizedEndDate = new Date(endDate.toDateString());
+  
+    if (this.attendance === 1) return "Completed";
+    if (normalizedCurrentDate <= normalizedEndDate) return "Upcoming";
+    if (normalizedCurrentDate > normalizedEndDate && this.attendance === 0) return "Expired";
     return "Invalid Status";
   }
 }
@@ -82,8 +86,8 @@ async function byStaffId(id) {
       return tc;
     });
   } catch (error) {
-    console.error(`Failed to get all ${tableName}s` + error);
-    throw error;
+    console.error(`Failed to get training data by staff ID ${id}: `, error);
+    throw new Error('Failed to retrieve training data. Please try again later.');
   }
 }
 

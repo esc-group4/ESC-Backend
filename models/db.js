@@ -21,8 +21,9 @@ async function init() {
     }
 }
 
-await init()
-
+(async () => {
+  await init();
+})();
 const cleanup = async () => await pool.end();
 
 class Table {

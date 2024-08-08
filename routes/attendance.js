@@ -4,8 +4,11 @@ const router = express.Router();
 
 router.put("/:request_id/:staff_id", async (req, res) => {
   const { request_id, staff_id } = req.params;
-  if (request_id == null || staff_id == null)
+  if (request_id == null || staff_id == null || request_id == "" || staff_id == "")
     return res.status(404).send("Empty request_id or staff_id");
+  if (isNaN(request_id) || isNaN(staff_id)) {
+    return res.status(400).send("Invalid request_id or staff_id");
+  }
   try {
     const result = await updateAttendance(request_id, staff_id);
     if (result == 1) res.status(201).send("Attendance Updated");
