@@ -51,11 +51,14 @@ class TrainingCourse {
       "course_location",
       "course_description",
     ].forEach((name) => (this[name] = obj[name]));
+    console.log(this.attendance);
+
     this.status = this.computeStatus();
   }
 
   computeStatus() {
     const current_date = new Date(new Date().toDateString());
+    console.log(this.attendance);
     if (this.attendance == 1) return "Completed";
     if (current_date <= this.endDate) return "Upcoming";
     if (current_date > this.endDate && this.attendance == 0) return "Expired";
@@ -67,11 +70,11 @@ async function byStaffId(id) {
   try {
     const [rows, fieldDefs] = await pool.query(
       `
-            SELECT grade, attendance, type, reasons, completedDateTime, startDate, endDate, TrainingRequest.course_name, providerName, skill_name, course_location, course_description FROM Training
-            LEFT JOIN TrainingRequest
-            ON TrainingRequest.request_id = Training.request_id
-            LEFT JOIN Course
-            ON TrainingRequest.course_name = Course.course_name
+            SELECT grade, attendance, type, reasons, completedDateTime, startDate, endDate, TrainingRequest.course_name, providerName, skill_name, course_location, course_description FROM tsh.Training
+            LEFT JOIN tsh.TrainingRequest
+            ON tsh.TrainingRequest.request_id = tsh.Training.request_id
+            LEFT JOIN tsh.Course
+            ON tsh.TrainingRequest.course_name = tsh.Course.course_name
             WHERE staff_id = ?
         `,
       [id]
